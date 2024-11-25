@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JournalController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [JournalController::class, 'index']);
+
+Route::post('/addJournalEntry', [JournalController::class, 'addJournalEntry'])->name('addJournalEntry');
