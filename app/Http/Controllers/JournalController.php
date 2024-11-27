@@ -5,19 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\journal;
 use App\Models\product;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class JournalController extends Controller
 {
-    public function index() {
-        return view('index', ['journalEntries' => journal::orderBy('id', 'DESC')->get(), 'products' => product::all()]);
+    public function index(): View {
+        return view('index', [
+            'journalEntries' => journal::orderBy('id', 'DESC')->paginate(15),
+            'products' => product::all(),
+        ]);
     }
 
-    public function addJournalEntry(Request $request) {
+    public function addJournalEntry(Request $request) : RedirectResponse {
         \Log::debug(json_encode($request->all()));
 
-        //"products":["lielvardes|1.5","cheeseballs|1","lielvardes|1.5"],"amounts":["1","2","3"]
         $products = $request->products;
         $amounts = $request->amounts;
+
+        $request->validate([
+            'amounts.*' => 'gt:0',
+        ]);
 
         foreach ($products as $index => $product) {
             $productName = explode('|', $product)[0];

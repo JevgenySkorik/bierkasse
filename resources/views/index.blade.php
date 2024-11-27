@@ -15,12 +15,34 @@
 
 <body class="bg-zinc-900 text-gray-100 min-h-screen flex flex-col items-center justify-center">
 
-    <!-- Logo Section -->
-    <header class="mb-8 flex flex-col items-center">
+    <!-- Header Section -->
+    <header class="mt-2 flex flex-col items-center">
         <!-- Beer Mug Logo -->
-        <div class="text-6xl my-3">🍺</div> <!-- Placeholder for an image -->
-        <h1 style="font-family: 'Quintessential', serif;" class="text-5xl font-bold text-yellow-500 pt-3">Bierkasse</h1>
+        <div class="text-6xl my-3">🍺</div> <!-- Beer Mug Logo -->
+        <h1 style="font-family: 'Quintessential', serif;" class="text-5xl font-bold text-yellow-500 pt-3">
+            Bierkasse
+        </h1>
     </header>
+
+    <!-- Login Link at Bottom Right -->
+    <div class="w-full max-w-6xl flex justify-end p-4">
+        <a href="{{ route('dashboard') }}" class="text-yellow-500 font-bold hover:underline">
+            Edit
+        </a>
+    </div>
+
+    @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-3 rounded relative" role="alert">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline">{{ $error }}</span>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <div class="w-full max-w-6xl">
         <!-- Table -->
@@ -91,20 +113,14 @@
                             <td class="py-3 px-4">{{ $entry->notes }}</td>
                         </tr>
                         @endforeach
-                        <!-- Example Data Rows (Optional) -->
-                        <tr class="border-t border-gray-600">
-                            <td class="py-3 px-4">John Doe</td>
-                            <td class="py-3 px-4">2xBeer</td>
-                            <td class="py-3 px-4">25.11.2024.</td>
-                            <td class="py-3 px-4">Cash</td>
-                            <td class="py-3 px-4">2.50</td>
-                            <td class="py-3 px-4">Birthday gift</td>
-                        </tr>
                     </tbody>
                 </table>
             </form>
         </div>
+        {{ $journalEntries->links() }}
+
     </div>
+
     <script>
         const products = @json($products); // Convert PHP products array to JavaScript
 
@@ -134,6 +150,7 @@
             // Add event listener to the remove button
             newRow.querySelector('.remove-row').addEventListener('click', function() {
                 newRow.remove();
+                updateTotal();
             });
         }
 
@@ -146,7 +163,7 @@
             products.forEach((product, index) => {
                 var productPrice = product.value.split('|')[1];
                 var productAmount = amounts[index].value;
-                newTotal = +(Number(productPrice) * Number(productAmount));
+                newTotal = newTotal + (Number(productPrice) * Number(productAmount));
             });
             total.value = newTotal;
         }
