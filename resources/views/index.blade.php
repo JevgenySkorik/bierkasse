@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.layout')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Bierkasse</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍺</text></svg>">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Quintessential&display=swap" rel="stylesheet">
-</head>
-
-<body class="bg-zinc-900 text-gray-100 min-h-screen flex flex-col items-center justify-center">
+@section('content')
 
     <!-- Header Section -->
     <header class="mt-2 flex flex-col items-center">
@@ -31,18 +18,7 @@
         </a>
     </div>
 
-    @if ($errors->any())
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-3 rounded relative" role="alert">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>
-                <strong class="font-bold">Error!</strong>
-                <span class="block sm:inline">{{ $error }}</span>
-            </li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+    @include('layouts.errors')
 
     <div class="w-full max-w-6xl">
         <!-- Table -->
@@ -83,7 +59,7 @@
                                         <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
                                             <option style="display:none;"></option>
                                             @foreach ($products as $product)
-                                            <option value="{{ $product->name }}|{{ $product->price }}">{{ $product->name }}</option>
+                                            <option value="{{ $product->name }}|{{ $product->price }}">{{ $product->name }} (€{{ $product->price }})</option>
                                             @endforeach
                                         </select>
                                         <input name="amounts[]" type="number" min="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
@@ -134,7 +110,7 @@
             // Construct product select options dynamically
             let productOptions = '<option style="display:none;"></option>';
             products.forEach(product => {
-                productOptions += `<option value="${product.name}|${product.price}">${product.name}</option>`;
+                productOptions += `<option value="${product.name}|${product.price}">${product.name} (€${product.price})</option>`;
             });
 
             newRow.innerHTML = `
@@ -168,6 +144,5 @@
             total.value = newTotal;
         }
     </script>
-</body>
 
-</html>
+@endsection

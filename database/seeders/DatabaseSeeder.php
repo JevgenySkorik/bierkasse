@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\user;
+use App\Models\product;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,10 @@ class DatabaseSeeder extends Seeder
 
         user::create([
             'name' => 'admin',
+            'email' => 'jevgeny.skorik@gmail.com',
             'password' => Hash::make('Nsw223Sd'),
         ]);
+        product::create(['name' => 'Ilguciema', 'price' => 1.5]);
+        product::create(['name' => 'Salty chips', 'price' => 1]);
     }
 }

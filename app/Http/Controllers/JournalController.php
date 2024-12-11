@@ -43,4 +43,28 @@ class JournalController extends Controller
 
         return redirect('/');
     }
+
+    public function updateJournalEntries(Request $request) : RedirectResponse {
+        \Log::debug(json_encode($request->all()));
+
+        // "entries":{"2":{"name":"com! Jevgenijs Skoriks","date":"2024-12-11","method":"Cash","product":"Salty chips","amount":"1","total":"1","notes":null},"1":{"name":"com! Jevgenijs Skoriks","date":"2024-12-11","method":"Cash","product":"Ilguciema","amount":"3","total":"4.5","notes":null}},"save":{"2":"1"}
+        $request->validate([
+            'amount.*' => 'gt:0',
+            'total.*' => 'gt:0',
+        ]);
+
+        foreach ($request->entries as $index => $entry) {
+            $journalEntry = journal::find($index);
+            $journalEntry->name = $entry['name'];
+            $journalEntry->product = $entry['product'];
+            $journalEntry->amount = $entry['amount'];
+            $journalEntry->date = $entry['date'];
+            $journalEntry->method = $entry['method'];
+            $journalEntry->total = $entry['total'];
+            $journalEntry->notes = $entry['notes'];
+            $journalEntry->save();
+        }
+
+        return redirect('dashboard');
+    }
 }
