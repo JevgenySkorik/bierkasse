@@ -49,4 +49,11 @@ class AdminController extends Controller
             'products' => product::all(),
         ]);
     }
+
+    public function products()
+    {
+        return view('products', [
+            'productEntries' => product::orderBy('id', 'DESC')->paginate(15),
+        ]);
+    }
 }

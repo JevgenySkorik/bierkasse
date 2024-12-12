@@ -4,7 +4,8 @@
 
 @include('layouts.nav')
 
-<div class="pt-32 w-full max-w-6xl">
+<div class="pt-24 w-full max-w-6xl">
+    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">Edit journal</h1>
     <!-- Dashboard Table -->
     <div class="overflow-x-auto">
         <form method="post" action="{{ route('updateJournalEntries') }}" accept-charset="UTF-8">
@@ -43,7 +44,7 @@
                         <!-- Product -->
                         <td class="py-3 px-4">
                             <select name="entries[{{ $entry->id }}][product]" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
-                                <option style="display:none;"></option>
+                                <option style="display:none;" value="{{ $entry->product }}">{{ $entry->product }}</option>
                                 @foreach ($products as $product)
                                     <option value="{{ $product->name }}" {{ $entry->product == $product->name ? "selected" : "" }} >
                                         {{ $product->name }} (€{{ $product->price }})

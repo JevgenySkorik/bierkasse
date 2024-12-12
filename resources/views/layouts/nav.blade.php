@@ -18,6 +18,9 @@
                     <a href="{{ route('dashboard') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Edit</a>
                 </li>
                 <li>
+                    <a href="{{ route('products') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Products</a>
+                </li>
+                <li>
                     <a href="#" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Export</a>
                 </li>
                 <li>
