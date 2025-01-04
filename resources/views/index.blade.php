@@ -84,7 +84,7 @@
                             <td class="py-3 px-4">{{ $entry->name }}</td>
                             <td class="py-3 px-4">{{ $entry->date }}</td>
                             <td class="py-3 px-4">{{ $entry->method }}</td>
-                            <td class="py-3 px-4">{{ $entry->amount }}x {{ $entry->product }}</td>
+                            <td class="py-3 px-4">{{ $entry->amount }}x {{ $entry->product->name }}</td>
                             <td class="py-3 px-4">&euro; {{ $entry->total }}</td>
                             <td class="py-3 px-4">{{ $entry->notes }}</td>
                         </tr>

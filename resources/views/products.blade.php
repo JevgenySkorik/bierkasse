@@ -44,7 +44,7 @@
                     <tr class="border-t border-gray-600">
                         <!-- Name -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][name]" type="text" value="{{ $entry->name }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                            <input name="entries[{{ $entry->id }}][name]" type="text" value="{{ $entry->name }}" class="bg-zinc-600 text-gray-400 w-full p-2 rounded" disabled>
                         </td>
                         <!-- Price -->
                         <td class="py-3 px-4">

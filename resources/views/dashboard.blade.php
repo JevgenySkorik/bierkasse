@@ -44,7 +44,7 @@
                         <!-- Product -->
                         <td class="py-3 px-4">
                             <select name="entries[{{ $entry->id }}][product]" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
-                                <option style="display:none;" value="{{ $entry->product }}">{{ $entry->product }}</option>
+                                <option style="display:none;" value="{{ $entry->product->name }}">{{ $entry->product->name }}</option>
                                 @foreach ($products as $product)
                                     <option value="{{ $product->name }}" {{ $entry->product == $product->name ? "selected" : "" }} >
                                         {{ $product->name }} (€{{ $product->price }})

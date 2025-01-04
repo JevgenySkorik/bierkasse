@@ -45,7 +45,10 @@ class AdminController extends Controller
     public function dashboard()
     {
         return view('dashboard', [
-            'journalEntries' => journal::orderBy('id', 'DESC')->paginate(15),
+            'journalEntries' => journal::with('product:id,name')
+                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+                ->orderBy('id', 'DESC')
+                ->paginate(15),
             'products' => product::all(),
         ]);
     }

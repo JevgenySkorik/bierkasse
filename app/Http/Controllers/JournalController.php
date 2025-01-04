@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\journal;
 use App\Models\product;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -12,7 +13,10 @@ class JournalController extends Controller
 {
     public function index(): View {
         return view('index', [
-            'journalEntries' => journal::orderBy('id', 'DESC')->paginate(15),
+            'journalEntries' => journal::with('product:id,name')
+                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+                ->orderBy('id', 'DESC')
+                ->paginate(15),
             'products' => product::all(),
         ]);
     }
@@ -32,7 +36,7 @@ class JournalController extends Controller
 
             $newJournalEntry = new journal;
             $newJournalEntry->name = $request->name;
-            $newJournalEntry->product = $productName;
+            $newJournalEntry->product_id = product::where('name', $productName)->first()['id'];
             $newJournalEntry->amount = $amounts[$index];
             $newJournalEntry->date = $request->date;
             $newJournalEntry->method = $request->method;
@@ -65,10 +69,15 @@ class JournalController extends Controller
         foreach ($request->entries as $index => $entry) {
             $productEntry = product::find($index);
             if (isset($entry['delete'])) {
-                $productEntry->delete();
+                try {
+                    $productEntry->delete();
+                } catch (QueryException $e) {
+                    if ($e->getCode() == 23000) { // 23000 is the SQLSTATE code for integrity constraint violation
+                        return back()->withErrors(['error' => 'Cannot delete product. It is associated with existing journal entries.']);
+                    }
+                }
                 continue;
             }
-            $productEntry->name = $entry['name'];
             $productEntry->price = $entry['price'];
             $productEntry->save();
         }
@@ -84,7 +93,7 @@ class JournalController extends Controller
         foreach ($request->entries as $index => $entry) {
             $journalEntry = journal::find($index);
             $journalEntry->name = $entry['name'];
-            $journalEntry->product = $entry['product'];
+            $journalEntry->product_id = product::where('name', $entry['product'])->first()['id'];
             $journalEntry->amount = $entry['amount'];
             $journalEntry->date = $entry['date'];
             $journalEntry->method = $entry['method'];
