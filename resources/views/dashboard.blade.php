@@ -4,7 +4,9 @@
 
 @include('layouts.nav')
 
-<div class="pt-24 w-full max-w-6xl">
+@include('layouts.alerts')
+
+<div class="pt-8 w-full max-w-6xl">
     <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">Edit journal</h1>
     <!-- Dashboard Table -->
     <div class="overflow-x-auto">

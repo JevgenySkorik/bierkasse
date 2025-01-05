@@ -18,7 +18,7 @@
         </a>
     </div>
 
-    @include('layouts.errors')
+    @include('layouts.alerts')
 
     <div class="w-full max-w-6xl">
         <!-- Table -->

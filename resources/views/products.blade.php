@@ -4,9 +4,9 @@
 
 @include('layouts.nav')
 
-@include('layouts.errors')
+@include('layouts.alerts')
 
-<div class="pt-24 w-full max-w-6xl">
+<div class="pt-4 w-full max-w-6xl">
     <!-- Add new product -->
     <h1 class="text-3xl font-bold text-yellow-500 pt-3 my-3 text-center">Add new product</h1>
     <form action="{{ route('addProductEntry') }}" method="post" class="flex min-w-full items-center space-x-4 justify-center">
@@ -26,7 +26,7 @@
 
 
     <!-- Edit products -->
-    <h1 class="text-3xl font-bold text-yellow-500 pt-3 mb-3 mt-24 text-center">Edit products</h1>
+    <h1 class="text-3xl font-bold text-yellow-500 pt-3 mb-3 mt-12 text-center">Edit products</h1>
     <div class="overflow-x-auto">
         <form method="post" action="{{ route('updateProductEntries') }}" accept-charset="UTF-8">
             {{ csrf_field() }}
@@ -44,7 +44,7 @@
                     <tr class="border-t border-gray-600">
                         <!-- Name -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][name]" type="text" value="{{ $entry->name }}" class="bg-zinc-600 text-gray-400 w-full p-2 rounded" disabled>
+                            <input name="entries[{{ $entry->id }}][name]" type="text" value="{{ $entry->name }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
                         <!-- Price -->
                         <td class="py-3 px-4">

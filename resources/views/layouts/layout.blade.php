@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Quintessential&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-zinc-900 text-gray-100 min-h-screen flex flex-col items-center justify-center">
+<body class="bg-zinc-900 text-gray-100 min-h-screen flex flex-col items-center">
 
     @yield('content')
 

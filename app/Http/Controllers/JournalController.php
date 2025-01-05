@@ -58,8 +58,14 @@ class JournalController extends Controller
         $newProductEntry = new product;
         $newProductEntry->name = $request->name;
         $newProductEntry->price = $request->price;
-        $newProductEntry->save();
-
+        try {
+            $newProductEntry->save();
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) { // 23000 is the SQLSTATE code for integrity constraint violation
+                return back()->withErrors(['error' => 'Cannot create product, identical product already exists.']);
+            }
+        }
+        session()->flash('success', 'Product created successfully!');
         return redirect('products');
     }
 
@@ -78,10 +84,11 @@ class JournalController extends Controller
                 }
                 continue;
             }
+            $productEntry->name = $entry['name'];
             $productEntry->price = $entry['price'];
             $productEntry->save();
         }
-
+        session()->flash('success', 'Products updated successfully!');
         return redirect('products');
     }
 
@@ -101,7 +108,7 @@ class JournalController extends Controller
             $journalEntry->notes = $entry['notes'];
             $journalEntry->save();
         }
-
+        session()->flash('success', 'Journal entries updated successfully!');
         return redirect('dashboard');
     }
 }

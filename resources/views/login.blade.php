@@ -9,7 +9,7 @@
         <h1 style="font-family: 'Quintessential', serif;" class="text-5xl font-bold text-yellow-500 pt-3">Bierkasse</h1>
     </header>
 
-    @include('layouts.errors')
+    @include('layouts.alerts')
 
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto">
         <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-zinc-800 dark:border-zinc-700">
