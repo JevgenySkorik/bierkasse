@@ -15,13 +15,13 @@
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
             <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
                 <li>
-                    <a href="{{ route('dashboard') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Edit</a>
+                    <a href="{{ route('journal') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Journal</a>
                 </li>
                 <li>
                     <a href="{{ route('products') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Products</a>
                 </li>
                 <li>
-                    <a href="#" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Export</a>
+                    <a href="{{ route('export') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Export</a>
                 </li>
                 <li>
                     <a href="{{ route('logout') }}" class="block py-2 px-3 text-red-500 hover:text-red-600 rounded md:p-0">logout</a>

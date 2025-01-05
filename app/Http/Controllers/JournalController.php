@@ -109,6 +109,6 @@ class JournalController extends Controller
             $journalEntry->save();
         }
         session()->flash('success', 'Journal entries updated successfully!');
-        return redirect('dashboard');
+        return redirect('journal');
     }
 }

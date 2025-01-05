@@ -36,7 +36,11 @@
                         <th class="py-3 px-4 text-center">Name</th>
                         <th class="py-3 px-4 w-32 text-center">Price</th>
                         <th class="py-3 px-4 w-12 text-center">Delete</th>
-                        <th class="py-3 px-4 w-12 text-center">Actions</th>
+                        <th class="py-3 px-4 w-12 text-center">
+                            <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
+                                Save
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,21 +48,17 @@
                     <tr class="border-t border-gray-600">
                         <!-- Name -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][name]" type="text" value="{{ $entry->name }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                            <input name="entries[{{ $entry->id }}][name]" type="text" value="{{ $entry->name }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
                         <!-- Price -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][price]" type="text" value="{{ $entry->price }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                            <input name="entries[{{ $entry->id }}][price]" type="text" value="{{ $entry->price }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
                         <!-- Delete -->
                         <td class="py-3 px-4 text-center">
                             <input name="entries[{{ $entry->id }}][delete]" type="checkbox" class="text-center">
                         </td>
-                        <!-- Actions -->
                         <td class="py-3 px-4 text-center">
-                            <button type="submit" name="save[{{ $entry->id }}]" value="1" class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                Save
-                            </button>
                         </td>
                     </tr>
                     @endforeach

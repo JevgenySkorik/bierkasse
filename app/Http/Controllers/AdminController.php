@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\product;
 use App\Models\journal;
 
+use function Psy\debug;
+
 class AdminController extends Controller
 {
     public function login()
@@ -25,7 +27,7 @@ class AdminController extends Controller
 
     public function authenticate(Request $request): RedirectResponse
     {
-        \Log::info(json_encode($request->all()));
+        \Log::debug(json_encode($request->all()));
         $credentials = $request->validate([
             'name' => ['required'],
             'password' => ['required'],
@@ -42,9 +44,9 @@ class AdminController extends Controller
         ])->onlyInput('email');
     }
 
-    public function dashboard()
+    public function journal()
     {
-        return view('dashboard', [
+        return view('journal', [
             'journalEntries' => journal::with('product:id,name')
                 ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
                 ->orderBy('id', 'DESC')
@@ -58,5 +60,46 @@ class AdminController extends Controller
         return view('products', [
             'productEntries' => product::orderBy('id', 'DESC')->paginate(15),
         ]);
+    }
+
+    public function export()
+    {
+        $data = [];
+        $journalEntries = journal::with('product:id,name')
+            ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+            ->get();
+        $filename = date("d-m-Y_H-i-s") . '_export.csv';
+
+        foreach ($journalEntries as $entry) {
+            $data[] = [
+                'id' => $entry['id'],
+                'name' => $entry['name'],
+                'date' => $entry['date'],
+                'method' => $entry['method'],
+                'amount' => $entry['amount'],
+                'product' => $entry['product']['name'],
+                'total' => $entry['total'],
+                'notes' => $entry['notes'],
+            ];
+        }
+        // Set headers to prompt download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        // Open output stream
+        $output = fopen('php://output', 'w');
+
+        // Add CSV header
+        fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes']);
+
+        // Add data to CSV
+        foreach ($data as $row) {
+            fputcsv($output, $row);
+        }
+
+        // Close output stream
+        fclose($output);
+        exit;
+        return back();
     }
 }

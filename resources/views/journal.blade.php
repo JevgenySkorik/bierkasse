@@ -15,14 +15,17 @@
             <table class="min-w-full table-auto bg-zinc-700 shadow-lg rounded-lg">
                 <thead>
                     <tr class="bg-yellow-600 text-gray-100">
-                        <th class="py-3 px-4 text-left">Name</th>
-                        <th class="py-3 px-4 text-left">Date</th>
-                        <th class="py-3 px-4 text-left">Payment</th>
-                        <th class="py-3 px-4 text-left">Product</th>
-                        <th class="py-3 px-4 text-left">Amount</th>
-                        <th class="py-3 px-4 text-left">Total</th>
-                        <th class="py-3 px-4 text-left">Notes</th>
-                        <th class="py-3 px-4 text-left">Actions</th>
+                        <th class="py-3 px-4 text-center">Name</th>
+                        <th class="py-3 px-4 text-center">Date</th>
+                        <th class="py-3 px-4 text-center">Payment</th>
+                        <th class="py-3 px-4 text-center">Product</th>
+                        <th class="py-3 px-4 text-center">Amount</th>
+                        <th class="py-3 px-4 text-center">Total</th>
+                        <th class="py-3 px-4 text-center">
+                            <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
+                                Save
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,15 +33,15 @@
                     <tr class="border-t border-gray-600">
                         <!-- Name -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][name]" type="text" value="{{ $entry->name }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                            <input name="entries[{{ $entry->id }}][name]" type="text" value="{{ $entry->name }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
                         <!-- Date -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][date]" type="date" value="{{ $entry->date }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                            <input name="entries[{{ $entry->id }}][date]" type="date" value="{{ $entry->date }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
                         <!-- Payment Method -->
                         <td class="py-3 px-4">
-                            <select name="entries[{{ $entry->id }}][method]" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                            <select name="entries[{{ $entry->id }}][method]" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                                 <option value="Cash" {{ $entry->method == 'Cash' ? 'selected' : '' }}>Cash</option>
                                 <option value="Debt" {{ $entry->method == 'Debt' ? 'selected' : '' }}>Debt</option>
                             </select>
@@ -48,9 +51,9 @@
                             <select name="entries[{{ $entry->id }}][product]" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
                                 <option style="display:none;" value="{{ $entry->product->name }}">{{ $entry->product->name }}</option>
                                 @foreach ($products as $product)
-                                    <option value="{{ $product->name }}" {{ $entry->product == $product->name ? "selected" : "" }} >
-                                        {{ $product->name }} (€{{ $product->price }})
-                                    </option>
+                                <option value="{{ $product->name }}" {{ $entry->product == $product->name ? "selected" : "" }}>
+                                    {{ $product->name }} (€{{ $product->price }})
+                                </option>
                                 @endforeach
                             </select>
                         </td>
@@ -59,17 +62,11 @@
                         </td>
                         <!-- Total -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][total]" type="text" value="{{ $entry->total }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                            <input name="entries[{{ $entry->id }}][total]" type="text" value="{{ $entry->total }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
                         <!-- Notes -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][notes]" type="text" value="{{ $entry->notes }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
-                        </td>
-                        <!-- Actions -->
-                        <td class="py-3 px-4 text-center">
-                            <button type="submit" name="save[{{ $entry->id }}]" value="1" class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                Save
-                            </button>
+                            <input name="entries[{{ $entry->id }}][notes]" type="text" value="{{ $entry->notes }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded" placeholder="Notes">
                         </td>
                     </tr>
                     @endforeach

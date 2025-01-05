@@ -13,7 +13,7 @@
 
     <!-- Login Link at Bottom Right -->
     <div class="w-full max-w-6xl flex justify-end p-4">
-        <a href="{{ route('dashboard') }}" class="text-yellow-500 font-bold hover:underline">
+        <a href="{{ route('journal') }}" class="text-yellow-500 font-bold hover:underline">
             Edit
         </a>
     </div>
