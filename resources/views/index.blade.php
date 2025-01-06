@@ -62,7 +62,7 @@
                                             <option value="{{ $product->name }}|{{ $product->price }}">{{ $product->name }} (€{{ $product->price }})</option>
                                             @endforeach
                                         </select>
-                                        <input name="amounts[]" type="number" min="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
+                                        <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
                                         <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row hidden">-</button>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                     <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
                         ${productOptions}
                     </select>
-                    <input name="amounts[]" type="number" min="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
+                    <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
                     <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row">-</button>
                 `;
 

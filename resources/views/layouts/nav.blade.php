@@ -21,7 +21,10 @@
                     <a href="{{ route('products') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Products</a>
                 </li>
                 <li>
-                    <a href="{{ route('export') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Export</a>
+                    <a href="{{ route('debts') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Debts</a>
+                </li>
+                <li>
+                    <a href="{{ route('export') }}" class="block py-2 px-3 text-green-500 hover:text-green-400 rounded md:p-0">Export</a>
                 </li>
                 <li>
                     <a href="{{ route('logout') }}" class="block py-2 px-3 text-red-500 hover:text-red-600 rounded md:p-0">logout</a>

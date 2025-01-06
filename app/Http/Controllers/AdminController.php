@@ -61,6 +61,29 @@ class AdminController extends Controller
             'productEntries' => product::orderBy('id', 'DESC')->paginate(15),
         ]);
     }
+    
+    public function debts()
+    {
+        $debts = [];
+        $totals = [];
+        $journalEntries = journal::with('product:id,name')
+            ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+            ->where('method', 'Debt')
+            ->get();
+        
+        foreach ($journalEntries as $entry) {
+            $debts[$entry['name']][] = $entry->toArray();
+        }
+        foreach($debts as $name => $debtor) {
+            $totals[$name] = 0;
+            foreach($debtor as $debt) {
+                $totals[$name] += $debt['total'];
+            }
+        }
+        //\Log::debug(print_r($totals, true));
+
+        return view('debts', ['debts' => $debts, 'totals' => $totals]);
+    }
 
     public function export()
     {

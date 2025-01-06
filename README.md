@@ -16,18 +16,16 @@
 ## Todo
 
 ### Big tasks
-- [ ] **Debt page**
 - [ ] **Regular users/admins**
 
 ### Small tasks
-- [ ] Don't use tailwind cdn
 - [ ] Download title font and use locally
 
 ### Unsure about these
-- [ ] Journal editing mode automatic total calculation? Maybe if displayed as placeholder text
 - [ ] Name autocomplete based on existing entries
 - [ ] Should you be able to delete journal entries?
 - [ ] Basic api to work with the journal table
+- [ ] Journal editing mode automatic total calculation? Maybe if displayed as placeholder text
 
 ### Done
 - [x] Allow renaming products
@@ -35,3 +33,6 @@
 - [x] Success messages
 - [x] Combine save buttons into one at the top
 - [x] **Export as csv**
+- [x] Add warning to products edit page
+- [x] Don't use tailwind cdn
+- [x] **Debt page**
