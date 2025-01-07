@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\NameController;
 
 Route::get('/', [JournalController::class, 'index'])->name('index');
 Route::get('/login', [AdminController::class, 'login'])->name('login');
 Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+Route::get('/autocomplete', [NameController::class, 'autocomplete'])->name('autocomplete');
 Route::get('/journal', [AdminController::class, 'journal'])->middleware('auth')->name('journal');
 Route::get('/products', [AdminController::class, 'products'])->middleware('auth')->name('products');
 Route::get('/debts', [AdminController::class, 'debts'])->middleware('auth')->name('debts');

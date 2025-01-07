@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\journal;
 use App\Models\product;
+use App\Models\name;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -22,8 +23,15 @@ class JournalController extends Controller
     }
 
     public function addJournalEntry(Request $request) : RedirectResponse {
-        \Log::debug(json_encode($request->all()));
+        // If new name, add to names table(for autocomplete)
+        $nameExists = name::where('name', $request->name)->exists();
+        if (!$nameExists) {
+            $newName = new name;
+            $newName->name = $request->name;
+            $newName->save();
+        }
 
+        // Add new entry
         $products = $request->products;
         $amounts = $request->amounts;
 

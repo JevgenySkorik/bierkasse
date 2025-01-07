@@ -1,0 +1,23 @@
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.ui-menu-item {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #3c3c44;
+    color: white;
+}
+
+.ui-menu-item:focus {
+    outline: none;
+}
+
+#name {
+    width: 200px;
+}

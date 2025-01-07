@@ -17,15 +17,15 @@
 
 ### Big tasks
 - [ ] **Regular users/admins**
+- [ ] **Russian language**
 
 ### Small tasks
-- [ ] Download title font and use locally
+- [ ] Delete journal entries
+- [ ] Sort debts from biggest to lowest
+- [ ] Move js scripts to separate files
 
 ### Unsure about these
-- [ ] Name autocomplete based on existing entries
-- [ ] Should you be able to delete journal entries?
 - [ ] Basic api to work with the journal table
-- [ ] Journal editing mode automatic total calculation? Maybe if displayed as placeholder text
 
 ### Done
 - [x] Allow renaming products
@@ -36,3 +36,4 @@
 - [x] Add warning to products edit page
 - [x] Don't use tailwind cdn
 - [x] **Debt page**
+- [x] **Name autocomplete**

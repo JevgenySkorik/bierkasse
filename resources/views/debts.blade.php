@@ -34,7 +34,7 @@
                                     <th class="py-3 px-4 text-center">Notes</th>
                                     <th class="py-3 px-4 text-center">
                                         <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                            Mark paid
+                                            Mark as paid
                                         </button>
                                     </th>
                                 </tr>

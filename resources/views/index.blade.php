@@ -6,9 +6,7 @@
     <header class="mt-2 flex flex-col items-center">
         <!-- Beer Mug Logo -->
         <div class="text-6xl my-3">🍺</div> <!-- Beer Mug Logo -->
-        <h1 style="font-family: 'Quintessential', serif;" class="text-5xl font-bold text-yellow-500 pt-3">
-            Bierkasse
-        </h1>
+        <h1 style="font-family: 'Quintessential', serif;" class="text-5xl font-bold text-yellow-500 pt-3">Bierkasse</h1>
     </header>
 
     <!-- Login Link at Bottom Right -->
@@ -41,7 +39,7 @@
                         <!-- Form Row -->
                         <tr class="border-t border-gray-600">
                             <td class="py-3 px-4">
-                                <input name="name" type="text" placeholder="Enter name" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="name" id="name" type="text" placeholder="Enter name" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4">
                                 <input name="date" type="date" required value="<?php echo date("Y-m-d"); ?>" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
@@ -97,6 +95,24 @@
 
     </div>
 
+    <script>
+        $(document).ready(function() {
+            $('#name').autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "{{ route('autocomplete') }}",
+                        data: {
+                            query: request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 2 // Minimum length of input before triggering autocomplete
+            });
+        });
+    </script>
     <script>
         const products = @json($products); // Convert PHP products array to JavaScript
 
