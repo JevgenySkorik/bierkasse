@@ -1,30 +1,30 @@
 # Bierkasse
 
-## Ideas/Thoughts
+Bierkasse is a simple **bookkeeping tool** developed for a student corporation, but I assume it can be used for any simple bookkeeping case. It allows users to add entries to the journal which keeps track of who purchased what, what amount, what date and whether the person has paid for the product or not.
 
-* Users with different permissions
-  * Regular users - able to access and add entries to the journal
-  * Admin - able to access admin dashboard
-  * Should regular users be able to access the Debt page and mark debts as paid? Probably not.
-  * Basic auth for regular users, login for admins
+![Bierkasse main page](./screenshot.png)
 
-* Debt page
-  * Shows list of all people with debt
-  * On-click shows all orders with debt for this person
-  * Pay off separate orders or all of debt
+Some other features included are:
+* Name autocompletion based on previous entries
+* Automatic total calculation
+* Admin dashboard for journal and product entry editing
+* Ability to export all entries as a .csv files
+* Debts page for a fast and convenient way to check the debtors and mark debts as paid
 
 ## Todo
 
 ### Big tasks
-- [ ] **Regular users/admins**
+- [ ] **Basic auth for index page**
 - [ ] **Russian language**
 
 ### Small tasks
-- [ ] Delete journal entries
+- [ ] Ability to delete journal entries
 - [ ] Sort debts from biggest to lowest
 - [ ] Move js scripts to separate files
+- [ ] Better documentation
 
 ### Unsure about these
+- [ ] Should all routes be protected with middleware?
 - [ ] Basic api to work with the journal table
 
 ### Done

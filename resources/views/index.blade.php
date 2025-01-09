@@ -39,7 +39,7 @@
                         <!-- Form Row -->
                         <tr class="border-t border-gray-600">
                             <td class="py-3 px-4">
-                                <input name="name" id="name" type="text" placeholder="Enter name" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="name" id="autocomplete-name" type="text" placeholder="Enter name" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4">
                                 <input name="date" type="date" required value="<?php echo date("Y-m-d"); ?>" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
@@ -97,7 +97,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#name').autocomplete({
+            $('#autocomplete-name').autocomplete({
                 source: function(request, response) {
                     $.ajax({
                         url: "{{ route('autocomplete') }}",
