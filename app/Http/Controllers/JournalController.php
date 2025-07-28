@@ -46,6 +46,12 @@ class JournalController extends Controller
             $newJournalEntry->name = $request->name;
             $newJournalEntry->product_id = product::where('name', $productName)->first()['id'];
             $newJournalEntry->amount = $amounts[$index];
+            //Update product quantity
+            $currentQuantity  = product::where('name', $productName)->first()['quantity']; // Get current quantity for this product
+            $editedProduct = product::where('name', $productName)->first();
+            $editedProduct->quantity = $currentQuantity - $amounts[$index];
+            $editedProduct->save();
+            //
             $newJournalEntry->date = $request->date;
             $newJournalEntry->method = $request->method;
             $newJournalEntry->total = product::where('name', $productName)->first()['price'] * $amounts[$index];
@@ -94,6 +100,7 @@ class JournalController extends Controller
             }
             $productEntry->name = $entry['name'];
             $productEntry->price = $entry['price'];
+            $productEntry->quantity = $entry['quantity'];
             $productEntry->save();
         }
         session()->flash('success', 'Products updated successfully!');
@@ -109,7 +116,14 @@ class JournalController extends Controller
             $journalEntry = journal::find($index);
             $journalEntry->name = $entry['name'];
             $journalEntry->product_id = product::where('name', $entry['product'])->first()['id'];
+            $oldAmount = $journalEntry->amount;
             $journalEntry->amount = $entry['amount'];
+            //Update product quantity
+            $currentQuantity  = product::where('name', $entry['product'])->first()['quantity']; // Get current quantity for this product
+            $editedProduct = product::where('name', $entry['product'])->first();
+            $editedProduct->quantity = $currentQuantity + ($oldAmount - $entry['amount']);
+            $editedProduct->save();
+            //
             $journalEntry->date = $entry['date'];
             $journalEntry->method = $entry['method'];
             $journalEntry->total = $entry['total'];

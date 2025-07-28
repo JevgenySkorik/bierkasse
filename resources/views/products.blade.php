@@ -39,6 +39,7 @@
                 <li>Changing the name will change it for all journal entries (including old entries)</li>
                 <li>Changing the price will only affect new journal entries, old entry prices will remain the same</li>
             </ul>
+            <span class="font-medium">Only change product quantity when corresponding product is re-counted in real world </span>
         </div>
     </div>
 
@@ -50,6 +51,7 @@
                     <tr class="bg-yellow-600 text-gray-100">
                         <th class="py-3 px-4 text-center">Name</th>
                         <th class="py-3 px-4 w-32 text-center">Price</th>
+                        <th class="py-3 px-4 w-32 text-center">Quantity</th>
                         <th class="py-3 px-4 w-12 text-center">Delete</th>
                         <th class="py-3 px-4 w-12 text-center">
                             <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
@@ -68,6 +70,9 @@
                         <!-- Price -->
                         <td class="py-3 px-4">
                             <input name="entries[{{ $entry->id }}][price]" type="text" value="{{ $entry->price }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                        </td>
+                        <td class="py-3 px-4">
+                            <input name="entries[{{ $entry->id }}][quantity]" type="text" value="{{ $entry->quantity }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
                         <!-- Delete -->
                         <td class="py-3 px-4 text-center">

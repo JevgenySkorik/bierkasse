@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->float('price');
             $table->timestamps();
-
+            $table->integer('quantity')->default(0);
             $table->unique(['name', 'price']);
         });
     }

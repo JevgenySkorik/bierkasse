@@ -57,7 +57,10 @@
                                         <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
                                             <option style="display:none;"></option>
                                             @foreach ($products as $product)
-                                            <option value="{{ $product->name }}|{{ $product->price }}">{{ $product->name }} (€{{ $product->price }})</option>
+                                            <option value="{{ $product->name }}|{{ $product->price }}">
+                                                {{ $product->name }} (€{{ $product->price }}) 
+                                                Available amount: {{ $product->quantity }}
+                                            </option>
                                             @endforeach
                                         </select>
                                         <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
