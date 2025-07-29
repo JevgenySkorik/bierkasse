@@ -22,6 +22,19 @@ class JournalController extends Controller
         ]);
     }
 
+    //Add new name, if nothing is purchased yet
+    public function addName(Request $request) : RedirectResponse {
+        $nameExists = name::where('name', $request->name)->exists();
+        if (!$nameExists) {
+            $newName = new name;
+            $newName->name = $request->name;
+            $newName->balance = $request->balance;
+            $newName->save();
+        }
+        return redirect('debts');
+        
+    }
+
     public function addJournalEntry(Request $request) : RedirectResponse {
         // If new name, add to names table(for autocomplete)
         $nameExists = name::where('name', $request->name)->exists();
@@ -38,6 +51,9 @@ class JournalController extends Controller
         $request->validate([
             'amounts.*' => 'gt:0',
         ]);
+        
+        $nameEntry = name::where('name',$request->name)->first();
+        $currentBalance = $nameEntry->balance;
 
         foreach ($products as $index => $product) {
             $productName = explode('|', $product)[0];
@@ -46,6 +62,7 @@ class JournalController extends Controller
             $newJournalEntry->name = $request->name;
             $newJournalEntry->product_id = product::where('name', $productName)->first()['id'];
             $newJournalEntry->amount = $amounts[$index];
+
             //Update product quantity
             $currentQuantity  = product::where('name', $productName)->first()['quantity']; // Get current quantity for this product
             $editedProduct = product::where('name', $productName)->first();
@@ -56,20 +73,24 @@ class JournalController extends Controller
                 $editedProduct->quantity = 0;
             }
             $editedProduct->save();
-            //
+
             $newJournalEntry->date = $request->date;
             $newJournalEntry->method = $request->method;
-            $newJournalEntry->total = product::where('name', $productName)->first()['price'] * $amounts[$index];
-            $newJournalEntry->notes = $request->notes;
-            $newJournalEntry->save();
-
-            //Update user balance
-            $nameEntry = name::where('name',$request->name)->first();
-            if($request->method == 'Debt' && $nameEntry->balance >= 0 ) {
-
+            $subTotal = product::where('name', $productName)->first()['price'] * $amounts[$index];
+            if($request->method == 'Debt' && $currentBalance >= $subTotal) {
+                $currentBalance -= $subTotal;
+                $newJournalEntry->method = 'Cash';
             }
-        }
 
+            $newJournalEntry->total = $subTotal;
+            $newJournalEntry->notes = $request->notes;
+
+
+          
+            $newJournalEntry->save();
+        }
+        $nameEntry->balance = $currentBalance;
+        $nameEntry->save();
         return redirect('/');
     }
 
@@ -164,11 +185,16 @@ class JournalController extends Controller
     public function updateBalances(Request $request) : RedirectResponse {
         \Log::debug(json_encode($request->all()));
         foreach ($request->entries as $index => $entry) {
-            if($entry['refillWith'] > 0) {
-                $nameEntry = name::find($index);
-                $nameEntry->balance = $nameEntry->balance + $entry['refillWith'];
-                $nameEntry->save();
+            $nameEntry = name::find($index);
+            if (isset($entry['withdraw'])) {
+                $nameEntry->balance = 0;
             }
+            elseif ($entry['refillWith'] > 0) {
+                
+                $nameEntry->balance = $nameEntry->balance + $entry['refillWith'];
+                
+            }
+            $nameEntry->save();
         }
         session()->flash('success', 'Balances updated successfully!');
 

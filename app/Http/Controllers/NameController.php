@@ -11,7 +11,10 @@ class NameController extends Controller
     {
         \Log::debug("autocomplete request");
         $query = $request->get('query');
-        $names = name::where('name', 'LIKE', "%{$query}%")->pluck('name');
+
+        $names = name::where('name', 'LIKE', "%{$query}%")->pluck('name', 'balance')->map(function ($name, $balance) {
+            return "$name (€$balance)";
+        });
         return response()->json($names);
     }
 

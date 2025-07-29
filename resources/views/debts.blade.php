@@ -71,7 +71,8 @@
             @endforeach
         </div>
     </div>
-    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">View wallet balance</h1>
+    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">View balance</h1>
+    <!-- Manage balances -->
     <div class="overflow-x-auto">
         <form method="post" action="{{ route('updateBalances') }}" accept-charset="UTF-8">
             {{ csrf_field() }}
@@ -81,9 +82,10 @@
                         <th class="py-3 px-4 text-center">Name</th>
                         <th class="py-3 px-4 w-32 text-center">Balance</th>
                         <th class="py-3 px-4 w-32 text-center">Refill amount (€)</th>
+                        <th class="py-3 px-4 w-32 text-center">Withdraw</th>
                         <th class="py-3 px-4 w-12 text-center">
                             <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                Refill 
+                                Update
                             </button>
                         </th>
                     </tr>
@@ -104,12 +106,48 @@
                         <td class="py-3 px-4">
                             <input name="entries[{{ $currentName->id }}][refillWith]" type="number" min="0" value="0" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
+                        <td class="py-3 px-4">
+                            <input name="entries[{{ $currentName->id }}][withdraw]" type="checkbox" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </form>
         {{ $names->links() }}
+    </div>
+    <!-- Add client, who has not purchaced anything yet -->
+    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">Add clients</h1>
+    <div class="overflow-x-auto">
+        <form method="post" action="{{ route('addName') }}" accept-charset="UTF-8">
+        {{ csrf_field() }}
+        <table class="min-w-full table-auto bg-zinc-700 shadow-lg rounded-lg">
+                <thead>
+                    <tr class="bg-yellow-600 text-gray-100">
+                        <th class="py-3 px-4 text-center">Name</th>
+                        <th class="py-3 px-4 w-32 text-center">Balance</th>
+                        <th class="py-3 px-4 w-12 text-center">
+                            <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
+                                Add
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t border-gray-600">
+                        <!-- Name -->
+                        <td class="py-3 px-4">
+                            <input name="name" id="autocomplete-name" type="text" placeholder="Enter name" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                        </td>
+
+                        <!-- Balance-->
+                        <td class="py-3 px-4">
+                            <input name="balance" id="autocomplete-name" type="number" value="0" placeholder="Enter name" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
 </div>
 

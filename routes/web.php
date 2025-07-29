@@ -19,5 +19,6 @@ Route::post('/addProductEntry', [JournalController::class, 'addProductEntry'])->
 Route::post('/updateJournalEntries', [JournalController::class, 'updateJournalEntries'])->name('updateJournalEntries');
 Route::post('/updateProductEntries', [JournalController::class, 'updateProductEntries'])->name('updateProductEntries');
 Route::post('/updateBalances', [JournalController::class, 'updateBalances'])->name('updateBalances');
+Route::post('/addName', [JournalController::class, 'addName'])->name('addName');
 Route::post('/updateDebts', [JournalController::class, 'updateDebts'])->name('updateDebts');
 Route::post('/login', [AdminController::class, 'authenticate'])->name('authenticate');
