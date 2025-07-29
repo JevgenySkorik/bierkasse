@@ -38,8 +38,8 @@
             <ul class="mt-1.5 list-disc list-inside">
                 <li>Changing the name will change it for all journal entries (including old entries)</li>
                 <li>Changing the price will only affect new journal entries, old entry prices will remain the same</li>
+                <li>Only change product quantity when corresponding product is re-counted in real world</li>
             </ul>
-            <span class="font-medium">Only change product quantity when corresponding product is re-counted in real world </span>
         </div>
     </div>
 

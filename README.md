@@ -15,8 +15,10 @@ Some other features included are:
 
 ### Big tasks
 - [ ] **Russian language** (add ability to switch between russian and english)
+- [ ] Fix hamburger menu for mobile view (or just redo it completely)
 
 ### Small tasks
+- [ ] Fix error when clicking "Mark as paid" on debts page with no debts selected
 - [ ] Ability to delete journal entries
 - [ ] Sort debts from biggest to lowest on the debts page
 - [ ] Move js scripts to separate files
