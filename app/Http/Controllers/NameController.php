@@ -14,4 +14,6 @@ class NameController extends Controller
         $names = name::where('name', 'LIKE', "%{$query}%")->pluck('name');
         return response()->json($names);
     }
+
+
 }

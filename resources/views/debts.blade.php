@@ -15,7 +15,7 @@
             @foreach ($debts as $name => $debt)
             <details class="group">
                 <summary class="flex cursor-pointer list-none items-center justify-between p-4 font-medium text-gray-100 group-open:bg-zinc-900/20">
-                    <p>{{ $name }} - <span class="text-lg text-red-300">&euro;  {{ $totals[$name] }}</span></p>
+                    <p style="color: darkslategrey;">{{ $name }} - <span class="text-lg text-red-300">&euro;  {{ $totals[$name] }}</span></p>
                     <div class="text-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block h-5 w-5 transition-all duration-300 group-open:rotate-180">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -71,7 +71,46 @@
             @endforeach
         </div>
     </div>
+    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">View wallet balance</h1>
+    <div class="overflow-x-auto">
+        <form method="post" action="{{ route('updateBalances') }}" accept-charset="UTF-8">
+            {{ csrf_field() }}
+            <table class="min-w-full table-auto bg-zinc-700 shadow-lg rounded-lg">
+                <thead>
+                    <tr class="bg-yellow-600 text-gray-100">
+                        <th class="py-3 px-4 text-center">Name</th>
+                        <th class="py-3 px-4 w-32 text-center">Balance</th>
+                        <th class="py-3 px-4 w-32 text-center">Refill amount (€)</th>
+                        <th class="py-3 px-4 w-12 text-center">
+                            <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
+                                Refill 
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($names as $currentName)
+                    <tr class="border-t border-gray-600">
+                        <!-- Name -->
+                        <td class="py-3 px-4">
+                            {{ $currentName->name }}
+                        </td>
 
+                        <!-- Balance-->
+                        <td class="py-3 px-4">
+                            € {{ $currentName->balance }}
+                        </td>
+                        <!-- Refill amount -->
+                        <td class="py-3 px-4">
+                            <input name="entries[{{ $currentName->id }}][refillWith]" type="number" min="0" value="0" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </form>
+        {{ $names->links() }}
+    </div>
 </div>
 
 
