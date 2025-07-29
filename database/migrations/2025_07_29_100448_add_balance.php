@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->integer('quantity')->default(0); // Or any type with default
+        Schema::table('names', function (Blueprint $table) {
+            $table->float('balance')->default(0.0); // Or any type with default
         });
     }
 

@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\product;
 use App\Models\journal;
+use App\Models\name;
 
 use function Psy\debug;
 
@@ -82,7 +83,7 @@ class AdminController extends Controller
         }
         //\Log::debug(print_r($totals, true));
 
-        return view('debts', ['debts' => $debts, 'totals' => $totals]);
+        return view('debts', ['debts' => $debts, 'totals' => $totals, 'names' => name::orderBy('id', 'DESC')->paginate(15),]);
     }
 
     public function export()

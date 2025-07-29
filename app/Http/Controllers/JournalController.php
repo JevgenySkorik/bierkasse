@@ -57,6 +57,12 @@ class JournalController extends Controller
             $newJournalEntry->total = product::where('name', $productName)->first()['price'] * $amounts[$index];
             $newJournalEntry->notes = $request->notes;
             $newJournalEntry->save();
+
+            //Update user balance
+            $nameEntry = name::where('name',$request->name)->first();
+            if($request->method == 'Debt' && $nameEntry->balance >= 0 ) {
+
+            }
         }
 
         return redirect('/');
@@ -145,4 +151,20 @@ class JournalController extends Controller
         session()->flash('success', 'Debts updated successfully!');
         return redirect('debts');
     }
+
+
+    public function updateBalances(Request $request) : RedirectResponse {
+        \Log::debug(json_encode($request->all()));
+        foreach ($request->entries as $index => $entry) {
+            if($entry['refillWith'] > 0) {
+                $nameEntry = name::find($index);
+                $nameEntry->balance = $nameEntry->balance + $entry['refillWith'];
+                $nameEntry->save();
+            }
+        }
+        session()->flash('success', 'Balances updated successfully!');
+
+        return redirect('debts');
+    }
 }
+
