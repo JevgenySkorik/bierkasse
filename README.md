@@ -1,6 +1,6 @@
 # Bierkasse
 
-Bierkasse is a simple **bookkeeping tool** developed for a student corporation, but I assume it can be used for any simple bookkeeping case. It allows users to add entries to the journal which keeps track of who purchased what, what amount, what date and whether the person has paid for the product or not.
+Bierkasse is a simple **bookkeeping tool** developed for a student corporation. It allows users to add entries to the journal which keeps track of who purchased what, what amount, what date and whether the person has paid for the product or not.
 
 ![Bierkasse main page](./screenshot.png)
 
@@ -14,26 +14,9 @@ Some other features included are:
 ## Todo
 
 ### Big tasks
-- [ ] **Basic auth for index page**
-- [ ] **Russian language**
+- [ ] **Russian language** (add ability to switch between russian and english)
 
 ### Small tasks
 - [ ] Ability to delete journal entries
-- [ ] Sort debts from biggest to lowest
+- [ ] Sort debts from biggest to lowest on the debts page
 - [ ] Move js scripts to separate files
-- [ ] Better documentation
-
-### Unsure about these
-- [ ] Should all routes be protected with middleware?
-- [ ] Basic api to work with the journal table
-
-### Done
-- [x] Allow renaming products
-- [x] Allow same name products with different prices
-- [x] Success messages
-- [x] Combine save buttons into one at the top
-- [x] **Export as csv**
-- [x] Add warning to products edit page
-- [x] Don't use tailwind cdn
-- [x] **Debt page**
-- [x] **Name autocomplete**
