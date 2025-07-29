@@ -49,7 +49,12 @@ class JournalController extends Controller
             //Update product quantity
             $currentQuantity  = product::where('name', $productName)->first()['quantity']; // Get current quantity for this product
             $editedProduct = product::where('name', $productName)->first();
-            $editedProduct->quantity = $currentQuantity - $amounts[$index];
+            if($amounts[$index] < $currentQuantity) {
+                $editedProduct->quantity = $currentQuantity - $amounts[$index];
+            }
+            else {
+                $editedProduct->quantity = 0;
+            }
             $editedProduct->save();
             //
             $newJournalEntry->date = $request->date;
@@ -121,7 +126,10 @@ class JournalController extends Controller
             //Update product quantity
             $currentQuantity  = product::where('name', $entry['product'])->first()['quantity']; // Get current quantity for this product
             $editedProduct = product::where('name', $entry['product'])->first();
-            $editedProduct->quantity = $currentQuantity + ($oldAmount - $entry['amount']);
+            if($entry->amount <= $currentQuantity) {
+                
+                $editedProduct->quantity = $currentQuantity + ($oldAmount - $entry['amount']);
+            }
             $editedProduct->save();
             //
             $journalEntry->date = $entry['date'];

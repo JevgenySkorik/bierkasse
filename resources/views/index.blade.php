@@ -58,8 +58,7 @@
                                             <option style="display:none;"></option>
                                             @foreach ($products as $product)
                                             <option value="{{ $product->name }}|{{ $product->price }}">
-                                                {{ $product->name }} (€{{ $product->price }}) 
-                                                Available amount: {{ $product->quantity }}
+                                                {{ $product->name }} (€{{ number_format($product->price, 2) }}) [{{ $product->quantity }}]
                                             </option>
                                             @endforeach
                                         </select>
@@ -129,7 +128,7 @@
             // Construct product select options dynamically
             let productOptions = '<option style="display:none;"></option>';
             products.forEach(product => {
-                productOptions += `<option value="${product.name}|${product.price}">${product.name} (€${product.price})</option>`;
+                productOptions += `<option value="${product.name}|${product.price}">${product.name} (€${product.price}) [${product.quantity}]</option>`;
             });
 
             newRow.innerHTML = `
