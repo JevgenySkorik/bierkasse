@@ -22,3 +22,6 @@ Some other features included are:
 - [ ] Ability to delete journal entries
 - [ ] Sort debts from biggest to lowest on the debts page
 - [ ] Move js scripts to separate files
+
+№№№ Bugs
+- [ ] If left alone for ~10 mins page needs to be refreshed before entering journal entry
