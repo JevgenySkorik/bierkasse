@@ -176,11 +176,13 @@ class JournalController extends Controller
     }
 
     public function updateDebts(Request $request) : RedirectResponse {
-        foreach ($request->debts as $index => $debt) {
-            $debtEntry = journal::find($index);
-            if (isset($debt['pay'])) {
-                $debtEntry->method = 'Cash';
-                $debtEntry->save();
+        if(!is_null($request->debts)) {
+            foreach ($request->debts as $index => $debt) {
+                $debtEntry = journal::find($index);
+                if (isset($debt['pay'])) {
+                    $debtEntry->method = 'Cash';
+                    $debtEntry->save();
+                }
             }
         }
         session()->flash('success', 'Debts updated successfully!');
