@@ -37,13 +37,16 @@ class JournalController extends Controller
 
     public function addJournalEntry(Request $request) : RedirectResponse {
         // If new name, add to names table(for autocomplete)
-        $nameExists = name::where('name', $request->name)->exists();
+        $nameArr = explode(' ', $request->name);
+        $clientName = explode(' (', $request->name)[0];
+
+        $nameExists = name::where('name', $clientName)->exists();
         if (!$nameExists) {
             $newName = new name;
-            $newName->name = $request->name;
+            $newName->name = $clientName;
             $newName->save();
         }
-
+        
         // Add new entry
         $products = $request->products;
         $amounts = $request->amounts;
@@ -51,15 +54,18 @@ class JournalController extends Controller
         $request->validate([
             'amounts.*' => 'gt:0',
         ]);
-        
-        $nameEntry = name::where('name',$request->name)->first();
+
+        $nameEntry = name::where('name',$clientName)->first();
+
         $currentBalance = $nameEntry->balance;
+
+        
 
         foreach ($products as $index => $product) {
             $productName = explode('|', $product)[0];
 
             $newJournalEntry = new journal;
-            $newJournalEntry->name = $request->name;
+            $newJournalEntry->name = $clientName;
             $newJournalEntry->product_id = product::where('name', $productName)->first()['id'];
             $newJournalEntry->amount = $amounts[$index];
 
