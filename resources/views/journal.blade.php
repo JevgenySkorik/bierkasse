@@ -22,6 +22,10 @@
                         <th class="py-3 px-4 text-center">Amount</th>
                         <th class="py-3 px-4 text-center">Total</th>
                         <th class="py-3 px-4 text-center">
+                            <input type="button" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded" onclick="enableRemoving()" value="Delete">
+
+                        </th>
+                        <th class="py-3 px-4 text-center">
                             <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
                                 Save
                             </button>
@@ -64,6 +68,10 @@
                         <td class="py-3 px-4">
                             <input name="entries[{{ $entry->id }}][total]" type="text" value="{{ $entry->total }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                         </td>
+                        <!-- Remove entry -->
+                        <td class="py-3 px-4">
+                            <input name="entries[{{ $entry->id }}][remove]" disabled type="checkbox"  class="bg-zinc-600 text-gray-200 w-full p-2 rounded" >
+                        </td>
                         <!-- Notes -->
                         <td class="py-3 px-4">
                             <input name="entries[{{ $entry->id }}][notes]" type="text" value="{{ $entry->notes }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded" placeholder="Notes">
@@ -77,5 +85,19 @@
     <!-- Pagination -->
     {{ $journalEntries->links() }}
 </div>
-
+<script>
+    function enableRemoving() {
+        const checkboxes = document.querySelectorAll('input[type=checkbox]');
+        const isDisabled= checkboxes[0].disabled;
+        checkboxes.forEach((el) => {
+            if(isDisabled) {
+                el.disabled = false;
+            }
+            else {
+                el.checked = false;
+                el.disabled = true;
+            }
+        });
+    }
+</script>
 @endsection

@@ -151,6 +151,11 @@ class JournalController extends Controller
         // "entries":{"2":{"name":"com! Jevgenijs Skoriks","date":"2024-12-11","method":"Cash","product":"Salty chips","amount":"1","total":"1","notes":null},"1":{"name":"com! Jevgenijs Skoriks","date":"2024-12-11","method":"Cash","product":"Ilguciema","amount":"3","total":"4.5","notes":null}},"save":{"2":"1"}
 
         foreach ($request->entries as $index => $entry) {
+            if(isset($entry['remove'])) {
+                $journalEntry = journal::find($index);
+                $journalEntry->delete();
+                continue;
+            }
             $journalEntry = journal::find($index);
             $journalEntry->name = $entry['name'];
             $journalEntry->product_id = product::where('name', $entry['product'])->first()['id'];
@@ -159,7 +164,7 @@ class JournalController extends Controller
             //Update product quantity
             $currentQuantity  = product::where('name', $entry['product'])->first()['quantity']; // Get current quantity for this product
             $editedProduct = product::where('name', $entry['product'])->first();
-            if($entry->amount <= $currentQuantity) {
+            if($entry['amount'] <= $currentQuantity) {
                 
                 $editedProduct->quantity = $currentQuantity + ($oldAmount - $entry['amount']);
             }
