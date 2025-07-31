@@ -12,7 +12,7 @@
     <!-- Login Link at Bottom Right -->
     <div class="w-full max-w-6xl flex justify-end p-4">
         <a href="{{ route('journal') }}" class="text-yellow-500 font-bold hover:underline">
-            Edit
+            {{ __('messages.edit') }}
         </a>
     </div>
 
@@ -20,34 +20,39 @@
 
     <div class="w-full max-w-6xl">
         <!-- Table -->
+        <form method="post" action="{{ route('changeLocale') }}">
+        {{ csrf_field() }}
+            <button type="submit" name="language" value="ru">RU</button>
+            <button type="submit" name="language" value="en">EN</button>
+        </form>
         <div class="overflow-x-auto">
             <form method="post" action="{{ route('addJournalEntry') }}" accept-charset="UTF-8">
                 {{ csrf_field() }}
                 <table class="min-w-full table-auto bg-zinc-700 shadow-lg rounded-lg">
                     <thead>
                         <tr class="bg-yellow-600 text-gray-100">
-                            <th class="py-3 px-4 text-left">Name</th>
-                            <th class="py-3 px-4 text-left">Date</th>
-                            <th class="py-3 px-4 text-left">Payment</th>
-                            <th class="py-3 px-4 text-left">Product</th>
-                            <th class="py-3 px-4 text-left">Total</th>
-                            <th class="py-3 px-4 text-left">Notes</th>
-                            <th class="py-3 px-4 text-left">Submit</th>
+                            <th class="py-3 px-4 text-left">{{ __('messages.name') }}</th>
+                            <th class="py-3 px-4 text-left">{{ __('messages.date') }}</th>
+                            <th class="py-3 px-4 text-left">{{ __('messages.paymethod') }}</th>
+                            <th class="py-3 px-4 text-left">{{ __('messages.product') }}</th>
+                            <th class="py-3 px-4 text-left">{{ __('messages.total') }}</th>
+                            <th class="py-3 px-4 text-left">{{ __('messages.notes') }}</th>
+                            <th class="py-3 px-4 text-left">{{ __('messages.submit') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Form Row -->
                         <tr class="border-t border-gray-600">
                             <td class="py-3 px-4">
-                                <input name="name" id="autocomplete-name" type="text" placeholder="Enter name" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="name" id="autocomplete-name" type="text" placeholder="{{ __('messages.enter_name') }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4">
                                 <input name="date" type="date" required value="<?php echo date("Y-m-d"); ?>" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4">
                                 <select name="method" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
-                                    <option value="Cash">Cash</option>
-                                    <option value="Debt">Debt</option>
+                                    <option value="Cash">{{ __('messages.cash') }}</option>
+                                    <option value="Debt">{{ __('messages.debt') }}</option>
                                 </select>
                             </td>
                             <td class="py-3 px-4">
