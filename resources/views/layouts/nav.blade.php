@@ -24,6 +24,9 @@
                     <a href="{{ route('debts') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Debts</a>
                 </li>
                 <li>
+                    <a href="{{ route('balances') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Balances</a>
+                </li>
+                <li>
                     <a href="{{ route('export') }}" class="block py-2 px-3 text-green-500 hover:text-green-400 rounded md:p-0">Export</a>
                 </li>
                 <li>

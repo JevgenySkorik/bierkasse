@@ -63,6 +63,10 @@ class AdminController extends Controller
         ]);
     }
     
+    public function balances() {
+        return view('balances', ['names' => name::orderBy('id', 'DESC')->paginate(15),]);
+    }
+
     public function debts()
     {
         $debts = [];

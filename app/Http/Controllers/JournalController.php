@@ -22,19 +22,6 @@ class JournalController extends Controller
         ]);
     }
 
-    //Add new name, if nothing is purchased yet
-    public function addName(Request $request) : RedirectResponse {
-        $nameExists = name::where('name', $request->name)->exists();
-        if (!$nameExists) {
-            $newName = new name;
-            $newName->name = $request->name;
-            $newName->balance = $request->balance;
-            $newName->save();
-        }
-        return redirect('debts');
-        
-    }
-
     public function addJournalEntry(Request $request) : RedirectResponse {
         // If new name, add to names table(for autocomplete)
         $nameArr = explode(' ', $request->name);
@@ -211,7 +198,20 @@ class JournalController extends Controller
         }
         session()->flash('success', 'Balances updated successfully!');
 
-        return redirect('debts');
+        return redirect('balances');
     }
+    //Add new name, if nothing is purchased yet
+    public function addName(Request $request) : RedirectResponse {
+        $nameExists = name::where('name', $request->name)->exists();
+        if (!$nameExists) {
+            $newName = new name;
+            $newName->name = $request->name;
+            $newName->balance = $request->balance;
+            $newName->save();
+        }
+        return redirect('balances');
+        
+    }
+    
 }
 

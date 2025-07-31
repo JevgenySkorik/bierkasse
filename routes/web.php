@@ -12,6 +12,7 @@ Route::get('/autocomplete', [NameController::class, 'autocomplete'])->name('auto
 Route::get('/journal', [AdminController::class, 'journal'])->middleware('auth')->name('journal');
 Route::get('/products', [AdminController::class, 'products'])->middleware('auth')->name('products');
 Route::get('/debts', [AdminController::class, 'debts'])->middleware('auth')->name('debts');
+Route::get('/balances', [AdminController::class, 'balances'])->middleware('auth')->name('balances');
 Route::get('/export', [AdminController::class, 'export'])->middleware('auth')->name('export');
 
 Route::post('/addJournalEntry', [JournalController::class, 'addJournalEntry'])->name('addJournalEntry');
