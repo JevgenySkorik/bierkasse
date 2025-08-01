@@ -90,44 +90,81 @@ class AdminController extends Controller
         return view('debts', ['debts' => $debts, 'totals' => $totals, 'names' => name::orderBy('id', 'DESC')->paginate(15),]);
     }
 
-    public function export()
+    public function export($type)
     {
-        $data = [];
-        $journalEntries = journal::with('product:id,name')
-            ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
-            ->get();
-        $filename = date("d-m-Y_H-i-s") . '_export.csv';
+        if($type == 'journal') {
+            $data = [];
+            $journalEntries = journal::with('product:id,name')
+                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+                ->get();
 
-        foreach ($journalEntries as $entry) {
-            $data[] = [
-                'id' => $entry['id'],
-                'name' => $entry['name'],
-                'date' => $entry['date'],
-                'method' => $entry['method'],
-                'amount' => $entry['amount'],
-                'product' => $entry['product']['name'],
-                'total' => $entry['total'],
-                'notes' => $entry['notes'],
-            ];
+            $filename = "journal_" . date("d-m-Y_H-i-s") . '_export.csv';
+
+            foreach ($journalEntries as $entry) {
+                $data[] = [
+                    'id' => $entry['id'],
+                    'name' => $entry['name'],
+                    'date' => $entry['date'],
+                    'method' => $entry['method'],
+                    'amount' => $entry['amount'],
+                    'product' => $entry['product']['name'],
+                    'total' => $entry['total'],
+                    'notes' => $entry['notes'],
+                ];
+            }
+            // Set headers to prompt download
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+            // Open output stream
+            $output = fopen('php://output', 'w');
+
+            // Add CSV header
+            fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes']);
+
+            // Add data to CSV
+            foreach ($data as $row) {
+                fputcsv($output, $row);
+            }
+
+            // Close output stream
+            fclose($output);
+            exit;
+            return back();
         }
-        // Set headers to prompt download
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        elseif($type == 'products') {;
+            $data = [];
 
-        // Open output stream
-        $output = fopen('php://output', 'w');
 
-        // Add CSV header
-        fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes']);
+            $productEntries = product::select(['id', 'name', 'quantity'])->get();
+            $filename = "products_ " . date("d-m-Y_H-i-s") . '_export.csv';
 
-        // Add data to CSV
-        foreach ($data as $row) {
-            fputcsv($output, $row);
+            foreach ($productEntries as $entry) {
+                $data[] = [
+                    'id' => $entry['id'],
+                    'name' => $entry['name'],
+                    'quantity' => $entry['quantity']
+                ];
+            }
+            // Set headers to prompt download
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+            // Open output stream
+            $output = fopen('php://output', 'w');
+
+            // Add CSV header
+            fputcsv($output, ['id', 'name', 'quantity']);
+
+            // Add data to CSV
+            foreach ($data as $row) {
+                fputcsv($output, $row);
+            }
+
+            // Close output stream
+            fclose($output);
+            exit;
+            return back();
         }
-
-        // Close output stream
-        fclose($output);
-        exit;
-        return back();
     }
 }

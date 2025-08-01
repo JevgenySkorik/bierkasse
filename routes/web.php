@@ -13,15 +13,15 @@ Route::get('/journal', [AdminController::class, 'journal'])->middleware('auth')-
 Route::get('/products', [AdminController::class, 'products'])->middleware('auth')->name('products');
 Route::get('/debts', [AdminController::class, 'debts'])->middleware('auth')->name('debts');
 Route::get('/balances', [AdminController::class, 'balances'])->middleware('auth')->name('balances');
-Route::get('/export', [AdminController::class, 'export'])->middleware('auth')->name('export');
+Route::get('/export/{type}', [AdminController::class, 'export'])->middleware('auth')->name('export');
 
 Route::post('/addJournalEntry', [JournalController::class, 'addJournalEntry'])->name('addJournalEntry');
 Route::post('/addProductEntry', [JournalController::class, 'addProductEntry'])->name('addProductEntry');
 Route::post('/updateJournalEntries', [JournalController::class, 'updateJournalEntries'])->name('updateJournalEntries');
 Route::post('/updateProductEntries', [JournalController::class, 'updateProductEntries'])->name('updateProductEntries');
-Route::post('/updateBalances', [JournalController::class, 'updateBalances'])->name('updateBalances');
-Route::post('/addName', [JournalController::class, 'addName'])->name('addName');
-Route::post('/updateDebts', [JournalController::class, 'updateDebts'])->name('updateDebts');
+Route::post('/updateBalances', [JournalController::class, 'updateBalances'])->middleware('auth')->name('updateBalances');
+Route::post('/addName', [JournalController::class, 'addName'])->middleware('auth')->name('addName');
+Route::post('/updateDebts', [JournalController::class, 'updateDebts'])->middleware('auth')->name('updateDebts');
 Route::post('/login', [AdminController::class, 'authenticate'])->name('authenticate');
 Route::post('/changeLocale', [App\Http\Controllers\LanguageController::class, 'changeLocale'])->name('changeLocale'); 
 });

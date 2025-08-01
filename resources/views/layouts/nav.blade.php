@@ -27,7 +27,10 @@
                     <a href="{{ route('balances') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">{{ __('messages.balances') }}</a>
                 </li>
                 <li>
-                    <a href="{{ route('export') }}" class="block py-2 px-3 text-green-500 hover:text-green-400 rounded md:p-0">{{ __('messages.export') }}</a>
+                    <a href="{{ route('export', ['type' => 'journal']) }}" class="block py-2 px-3 text-green-500 hover:text-green-400 rounded md:p-0">{{ __('messages.export_j') }}</a>
+                </li>
+                <li>
+                    <a href="{{ route('export', ['type' => 'products']) }}" class="block py-2 px-3 text-green-500 hover:text-green-400 rounded md:p-0">{{ __('messages.export_p') }}</a>
                 </li>
                 <li>
                     <a href="{{ route('logout') }}" class="block py-2 px-3 text-red-500 hover:text-red-600 rounded md:p-0">{{ __('messages.logout') }}</a>
