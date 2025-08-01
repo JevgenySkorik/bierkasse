@@ -47,6 +47,12 @@
                         <button type="submit" name="language" value="ru">RU</button>
                     </form>
                 </li>
+                <li>
+                    <form method="post" action="{{ route('changeLocale') }}">
+                        {{ csrf_field() }}
+                        <button type="submit" name="language" value="ee">EE</button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>

@@ -64,7 +64,7 @@ class AdminController extends Controller
     }
     
     public function balances() {
-        return view('balances', ['names' => name::orderBy('id', 'DESC')->paginate(15),]);
+        return view('balances', ['names' => name::orderBy('id', 'DESC')->paginate(10),]);
     }
 
     public function debts()
@@ -85,9 +85,8 @@ class AdminController extends Controller
                 $totals[$name] += $debt['total'];
             }
         }
-        //\Log::debug(print_r($totals, true));
 
-        return view('debts', ['debts' => $debts, 'totals' => $totals, 'names' => name::orderBy('id', 'DESC')->paginate(15),]);
+        return view('debts', ['debts' => $debts, 'totals' => $totals]);
     }
 
     public function export($type)

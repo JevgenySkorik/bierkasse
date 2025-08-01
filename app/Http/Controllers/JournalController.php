@@ -17,16 +17,16 @@ class JournalController extends Controller
             'journalEntries' => journal::with('product:id,name')
                 ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
                 ->orderBy('id', 'DESC')
-                ->paginate(15),
+                ->paginate(10),
             'products' => product::all(),
         ]);
     }
 
     public function addJournalEntry(Request $request) : RedirectResponse {
-        // If new name, add to names table(for autocomplete)
-        $nameArr = explode(' ', $request->name);
-        $clientName = explode(' (', $request->name)[0];
+        
+        $clientName = explode(' (', $request->name)[0]; //Split client's balance from name
 
+        // If new name, add to names table(for autocomplete)
         $nameExists = name::where('name', $clientName)->exists();
         if (!$nameExists) {
             $newName = new name;
@@ -43,10 +43,7 @@ class JournalController extends Controller
         ]);
 
         $nameEntry = name::where('name',$clientName)->first();
-
         $currentBalance = $nameEntry->balance;
-
-        
 
         foreach ($products as $index => $product) {
             $productName = explode('|', $product)[0];
@@ -59,6 +56,7 @@ class JournalController extends Controller
             //Update product quantity
             $currentQuantity  = product::where('name', $productName)->first()['quantity']; // Get current quantity for this product
             $editedProduct = product::where('name', $productName)->first();
+
             if($amounts[$index] < $currentQuantity) {
                 $editedProduct->quantity = $currentQuantity - $amounts[$index];
             }
@@ -70,6 +68,8 @@ class JournalController extends Controller
             $newJournalEntry->date = $request->date;
             $newJournalEntry->method = $request->method;
             $subTotal = product::where('name', $productName)->first()['price'] * $amounts[$index];
+
+            // Deduct payment from client's balance, if it is sufficient
             if($request->method == 'Debt' && $currentBalance >= $subTotal) {
                 $currentBalance -= $subTotal;
                 $newJournalEntry->method = 'Cash';
@@ -78,10 +78,9 @@ class JournalController extends Controller
             $newJournalEntry->total = $subTotal;
             $newJournalEntry->notes = $request->notes;
 
-
-          
             $newJournalEntry->save();
         }
+
         $nameEntry->balance = $currentBalance;
         $nameEntry->save();
         return redirect('/');
@@ -97,13 +96,14 @@ class JournalController extends Controller
         $newProductEntry = new product;
         $newProductEntry->name = $request->name;
         $newProductEntry->price = $request->price;
-        try {
+
+        if (!Product::where('name', $newProductEntry->name)->exists()) {
             $newProductEntry->save();
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) { // 23000 is the SQLSTATE code for integrity constraint violation
-                return back()->withErrors(['error' => __('messages.error_prod')]);
-            }
         }
+        else {
+            return back()->withErrors(['error' => __('messages.delete_prod')]);
+        }
+
         session()->flash('success', __('messages.prod_create'));
         return redirect('products');
     }
@@ -149,6 +149,7 @@ class JournalController extends Controller
             $journalEntry->product_id = product::where('name', $entry['product'])->first()['id'];
             $oldAmount = $journalEntry->amount;
             $journalEntry->amount = $entry['amount'];
+
             //Update product quantity
             $currentQuantity  = product::where('name', $entry['product'])->first()['quantity']; // Get current quantity for this product
             $editedProduct = product::where('name', $entry['product'])->first();
@@ -185,6 +186,7 @@ class JournalController extends Controller
 
     public function updateBalances(Request $request) : RedirectResponse {
         \Log::debug(json_encode($request->all()));
+
         foreach ($request->entries as $index => $entry) {
             $nameEntry = name::find($index);
             if (isset($entry['withdraw'])) {
@@ -201,6 +203,7 @@ class JournalController extends Controller
 
         return redirect('balances');
     }
+
     //Add new name, if nothing is purchased yet
     public function addName(Request $request) : RedirectResponse {
         $nameExists = name::where('name', $request->name)->exists();
