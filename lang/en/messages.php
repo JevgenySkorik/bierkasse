@@ -50,7 +50,7 @@ return [
     'username' => 'Your username',
     'passwords' => 'Password',
     'error' => 'Error',
-    'success' => 'Success',
+    'success_' => 'Success',
     'prod_success' => 'Products updated successully',
     'delete_prod' => 'Cannot delete product. It is associated with existing journal entries.',
     'journal_upd' => 'Journal entries updated successfully!',
