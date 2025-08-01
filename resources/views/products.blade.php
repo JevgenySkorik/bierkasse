@@ -8,25 +8,25 @@
 
 <div class="pt-4 w-full max-w-6xl">
     <!-- Add new product -->
-    <h1 class="text-3xl font-bold text-yellow-500 pt-3 my-3 text-center">Add new product</h1>
+    <h1 class="text-3xl font-bold text-yellow-500 pt-3 my-3 text-center">{{ __('messages.add_product') }}</h1>
     <form action="{{ route('addProductEntry') }}" method="post" class="flex min-w-full items-center space-x-4 justify-center">
         {{ csrf_field() }}
         <div class="flex flex-col">
-            <label for="name" class="text-gray-200">Name:</label>
+            <label for="name" class="text-gray-200">{{ __('messages.pr_name') }}:</label>
             <input name="name" type="text" required class="bg-zinc-600 text-gray-200 p-2 rounded">
         </div>
         <div class="flex flex-col">
-            <label for="price" class="text-gray-200">Price:</label>
+            <label for="price" class="text-gray-200">{{ __('messages.price') }}:</label>
             <input name="price" type="text" required class="bg-zinc-600 text-gray-200 p-2 rounded w-24">
         </div>
         <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded self-end">
-            Submit
+            {{ __('messages.submit') }}
         </button>
     </form>
 
 
     <!-- Edit products -->
-    <h1 class="text-3xl font-bold text-yellow-500 pt-3 mb-3 mt-12 text-center">Edit products</h1>
+    <h1 class="text-3xl font-bold text-yellow-500 pt-3 mb-3 mt-12 text-center">{{ __('messages.edit_products') }}</h1>
 
     <div class="flex w-fit p-4 mb-4 mx-auto text-sm rounded-lg bg-zinc-800 text-red-400" role="alert">
         <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -34,12 +34,12 @@
         </svg>
         <span class="sr-only">Danger</span>
         <div>
-            <span class="font-medium">When editing products keep in mind that:</span>
+            <span class="font-medium">{{ __('messages.danger_1') }}</span>
             <ul class="mt-1.5 list-disc list-inside">
-                <li>Changing the name will change it for all journal entries (including old entries)</li>
-                <li>Changing the price will only affect new journal entries, old entry prices will remain the same</li>
+                <li>{{ __('messages.danger_2') }}</li>
+                <li>{{ __('messages.danger_3') }}></li>
             </ul>
-            <span class="font-medium">Only change product quantity when corresponding product is re-counted in real world </span>
+            <span class="font-medium">{{ __('messages.danger_4') }} </span>
         </div>
     </div>
 
@@ -49,13 +49,13 @@
             <table class="min-w-full table-auto bg-zinc-700 shadow-lg rounded-lg">
                 <thead>
                     <tr class="bg-yellow-600 text-gray-100">
-                        <th class="py-3 px-4 text-center">Name</th>
-                        <th class="py-3 px-4 w-32 text-center">Price</th>
-                        <th class="py-3 px-4 w-32 text-center">Quantity</th>
-                        <th class="py-3 px-4 w-12 text-center">Delete</th>
+                        <th class="py-3 px-4 text-center">{{ __('messages.pr_name') }}</th>
+                        <th class="py-3 px-4 w-32 text-center">{{ __('messages.price') }}</th>
+                        <th class="py-3 px-4 w-32 text-center">{{ __('messages.amount') }}</th>
+                        <th class="py-3 px-4 w-12 text-center">{{ __('messages.delete') }}</th>
                         <th class="py-3 px-4 w-12 text-center">
                             <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                Save
+                                {{ __('messages.save') }}
                             </button>
                         </th>
                     </tr>

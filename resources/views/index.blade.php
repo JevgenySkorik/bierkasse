@@ -77,10 +77,10 @@
                                 <input id="total" type="text" value="0" disabled class="bg-zinc-700 text-gray-400 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4">
-                                <input name="notes" type="text" placeholder="Enter notes" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="notes" type="text" placeholder="{{ __('messages.notes') }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4 text-center">
-                                <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">Submit</button>
+                                <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">{{ __('messages.submit') }}</button>
                             </td>
 
                         </tr>
@@ -88,7 +88,7 @@
                         <tr class="border-t border-gray-600">
                             <td class="py-3 px-4">{{ $entry->name }}</td>
                             <td class="py-3 px-4">{{ $entry->date }}</td>
-                            <td class="py-3 px-4">{{ $entry->method }}</td>
+                            <td class="py-3 px-4">{{ __('messages.' . $entry->method) }}</td>
                             <td class="py-3 px-4">{{ $entry->amount }}x {{ $entry->product->name }}</td>
                             <td class="py-3 px-4">&euro; {{ $entry->total }}</td>
                             <td class="py-3 px-4">{{ $entry->notes }}</td>

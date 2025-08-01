@@ -7,7 +7,7 @@
 @include('layouts.alerts')
 
 <div class="pt-8 w-full max-w-6xl">
-    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">Edit journal</h1>
+    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">{{ __('messages.edit_journal') }}</h1>
     <!-- Dashboard Table -->
     <div class="overflow-x-auto">
         <form method="post" action="{{ route('updateJournalEntries') }}" accept-charset="UTF-8">
@@ -15,19 +15,19 @@
             <table class="min-w-full table-auto bg-zinc-700 shadow-lg rounded-lg">
                 <thead>
                     <tr class="bg-yellow-600 text-gray-100">
-                        <th class="py-3 px-4 text-center">Name</th>
-                        <th class="py-3 px-4 text-center">Date</th>
-                        <th class="py-3 px-4 text-center">Payment</th>
-                        <th class="py-3 px-4 text-center">Product</th>
-                        <th class="py-3 px-4 text-center">Amount</th>
-                        <th class="py-3 px-4 text-center">Total</th>
+                        <th class="py-3 px-4 text-center">{{ __('messages.name') }}</th>
+                        <th class="py-3 px-4 text-center">{{ __('messages.date') }}</th>
+                        <th class="py-3 px-4 text-center">{{ __('messages.paymethod') }}</th>
+                        <th class="py-3 px-4 text-center">{{ __('messages.product') }}</th>
+                        <th class="py-3 px-4 text-center">{{ __('messages.amount') }}</th>
+                        <th class="py-3 px-4 text-center">{{ __('messages.total') }}</th>
                         <th class="py-3 px-4 text-center">
-                            <input type="button" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded" onclick="enableRemoving()" value="Delete">
+                            <input type="button" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded" onclick="enableRemoving()" value="{{ __('messages.delete') }}">
 
                         </th>
                         <th class="py-3 px-4 text-center">
                             <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                Save
+                                {{ __('messages.save') }}
                             </button>
                         </th>
                     </tr>
@@ -46,8 +46,8 @@
                         <!-- Payment Method -->
                         <td class="py-3 px-4">
                             <select name="entries[{{ $entry->id }}][method]" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
-                                <option value="Cash" {{ $entry->method == 'Cash' ? 'selected' : '' }}>Cash</option>
-                                <option value="Debt" {{ $entry->method == 'Debt' ? 'selected' : '' }}>Debt</option>
+                                <option value="Cash" {{ $entry->method == 'Cash' ? 'selected' : '' }}>{{ __('messages.cash') }}</option>
+                                <option value="Debt" {{ $entry->method == 'Debt' ? 'selected' : '' }}>{{ __('messages.debt') }}</option>
                             </select>
                         </td>
                         <!-- Product -->
@@ -74,7 +74,7 @@
                         </td>
                         <!-- Notes -->
                         <td class="py-3 px-4">
-                            <input name="entries[{{ $entry->id }}][notes]" type="text" value="{{ $entry->notes }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded" placeholder="Notes">
+                            <input name="entries[{{ $entry->id }}][notes]" type="text" value="{{ $entry->notes }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded" placeholder="{{ __('messages.notes') }}">
                         </td>
                     </tr>
                     @endforeach

@@ -101,10 +101,10 @@ class JournalController extends Controller
             $newProductEntry->save();
         } catch (QueryException $e) {
             if ($e->getCode() == 23000) { // 23000 is the SQLSTATE code for integrity constraint violation
-                return back()->withErrors(['error' => 'Cannot create product, identical product already exists.']);
+                return back()->withErrors(['error' => __('messages.error_prod')]);
             }
         }
-        session()->flash('success', 'Product created successfully!');
+        session()->flash('success', __('messages.prod_create'));
         return redirect('products');
     }
 
@@ -114,12 +114,13 @@ class JournalController extends Controller
         foreach ($request->entries as $index => $entry) {
             $productEntry = product::find($index);
             if (isset($entry['delete'])) {
-                try {
+
+                if (!$productEntry->journal()->exists()) {
+            
                     $productEntry->delete();
-                } catch (QueryException $e) {
-                    if ($e->getCode() == 23000) { // 23000 is the SQLSTATE code for integrity constraint violation
-                        return back()->withErrors(['error' => 'Cannot delete product. It is associated with existing journal entries.']);
-                    }
+                }
+                else {
+                    return back()->withErrors(['error' => __('messages.delete_prod')]);
                 }
                 continue;
             }
@@ -128,7 +129,7 @@ class JournalController extends Controller
             $productEntry->quantity = $entry['quantity'];
             $productEntry->save();
         }
-        session()->flash('success', 'Products updated successfully!');
+        session()->flash('success', __('messages.prod_success'));
         return redirect('products');
     }
 
@@ -163,7 +164,7 @@ class JournalController extends Controller
             $journalEntry->notes = $entry['notes'];
             $journalEntry->save();
         }
-        session()->flash('success', 'Journal entries updated successfully!');
+        session()->flash('success', __('messages.journal_upd'));
         return redirect('journal');
     }
 
@@ -177,7 +178,7 @@ class JournalController extends Controller
                 }
             }
         }
-        session()->flash('success', 'Debts updated successfully!');
+        session()->flash('success', __('messages.debt_upd'));
         return redirect('debts');
     }
 
@@ -196,7 +197,7 @@ class JournalController extends Controller
             }
             $nameEntry->save();
         }
-        session()->flash('success', 'Balances updated successfully!');
+        session()->flash('success', __('messages.balance_upd'));
 
         return redirect('balances');
     }

@@ -8,7 +8,7 @@
 
 <div class="pt-4 w-full max-w-6xl">
 
-    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">Debts</h1>
+    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">{{ __('messages.debts') }}</h1>
     <div class="flex justify-center">
         <button class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded" onclick="sortDebts()">
             <img src="{{ asset('sort.png') }}" alt="Sort" class="h-5 w-5">
@@ -33,13 +33,13 @@
                         <table class="min-w-full text-center table-auto bg-zinc-700 shadow-lg rounded-lg">
                             <thead>
                                 <tr class="bg-yellow-600 text-gray-100">
-                                    <th class="py-3 px-4 text-center">Date</th>
-                                    <th class="py-3 px-4 text-center">Product</th>
-                                    <th class="py-3 px-4 text-center">Total</th>
-                                    <th class="py-3 px-4 text-center">Notes</th>
+                                    <th class="py-3 px-4 text-center">{{ __('messages.date') }}</th>
+                                    <th class="py-3 px-4 text-center">{{ __('messages.product') }}</th>
+                                    <th class="py-3 px-4 text-center">{{ __('messages.total') }}</th>
+                                    <th class="py-3 px-4 text-center">{{ __('messages.notes') }}</th>
                                     <th class="py-3 px-4 text-center">
                                         <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                            Mark as paid
+                                            {{ __('messages.mark_paid') }}
                                         </button>
                                     </th>
                                 </tr>

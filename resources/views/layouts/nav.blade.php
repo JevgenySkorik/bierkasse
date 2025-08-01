@@ -15,24 +15,37 @@
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
             <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
                 <li>
-                    <a href="{{ route('journal') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Journal</a>
+                    <a href="{{ route('journal') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">{{ __('messages.journal') }}</a>
                 </li>
                 <li>
-                    <a href="{{ route('products') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Products</a>
+                    <a href="{{ route('products') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">{{ __('messages.products') }}</a>
                 </li>
                 <li>
-                    <a href="{{ route('debts') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Debts</a>
+                    <a href="{{ route('debts') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">{{ __('messages.debts') }}</a>
                 </li>
                 <li>
-                    <a href="{{ route('balances') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">Balances</a>
+                    <a href="{{ route('balances') }}" class="block py-2 px-3 text-white hover:text-yellow-500 rounded md:p-0">{{ __('messages.balances') }}</a>
                 </li>
                 <li>
-                    <a href="{{ route('export') }}" class="block py-2 px-3 text-green-500 hover:text-green-400 rounded md:p-0">Export</a>
+                    <a href="{{ route('export') }}" class="block py-2 px-3 text-green-500 hover:text-green-400 rounded md:p-0">{{ __('messages.export') }}</a>
                 </li>
                 <li>
-                    <a href="{{ route('logout') }}" class="block py-2 px-3 text-red-500 hover:text-red-600 rounded md:p-0">logout</a>
+                    <a href="{{ route('logout') }}" class="block py-2 px-3 text-red-500 hover:text-red-600 rounded md:p-0">{{ __('messages.logout') }}</a>
+                </li>
+                <li>
+                    <form method="post" action="{{ route('changeLocale') }}">
+                        {{ csrf_field() }}
+                        <button type="submit" name="language" value="en">EN</button>
+                    </form>
+                </li>
+                <li>
+                    <form method="post" action="{{ route('changeLocale') }}">
+                        {{ csrf_field() }}
+                        <button type="submit" name="language" value="ru">RU</button>
+                    </form>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+<script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>

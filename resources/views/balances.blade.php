@@ -7,21 +7,21 @@
 @include('layouts.alerts')
 
 <div class="pt-4 w-full max-w-6xl">
-    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">Balances</h1>
+    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">{{ __('messages.balances') }}</h1>
     <!-- Add client, who has not purchaced anything yet -->
-    <h2 class="text-2xl font-bold text-yellow-500 pt-3 my-3 text-center">Add new client</h2>
+    <h2 class="text-2xl font-bold text-yellow-500 pt-3 my-3 text-center">{{ __('messages.add_client') }}</h2>
     <form action="{{ route('addName') }}" method="post" class="flex min-w-full items-center space-x-4 justify-center">
         {{ csrf_field() }}
         <div class="flex flex-col">
-            <label for="name" class="text-gray-200">Name:</label>
+            <label for="name" class="text-gray-200">{{ __('messages.name') }} :</label>
             <input name="name" type="text" required class="bg-zinc-600 text-gray-200 p-2 rounded">
         </div>
         <div class="flex flex-col">
-            <label for="balance" class="text-gray-200">Balance:</label>
+            <label for="balance" class="text-gray-200">{{ __('messages.balance') }}:</label>
             <input name="balance" type="number" required class="bg-zinc-600 text-gray-200 p-2 rounded w-24">
         </div>
         <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded self-end">
-            Submit
+            {{ __('messages.submit') }}
         </button>
     </form>
     <br/>
@@ -32,13 +32,13 @@
             <table class="min-w-full table-auto bg-zinc-700 shadow-lg rounded-lg">
                 <thead>
                     <tr class="bg-yellow-600 text-gray-100">
-                        <th class="py-3 px-4 text-center">Name</th>
-                        <th class="py-3 px-4 w-32 text-center">Balance</th>
-                        <th class="py-3 px-4 w-32 text-center">Refill amount (€)</th>
-                        <th class="py-3 px-4 w-32 text-center">Withdraw</th>
+                        <th class="py-3 px-4 text-center">{{ __('messages.name') }}</th>
+                        <th class="py-3 px-4 w-32 text-center">{{ __('messages.balance') }}</th>
+                        <th class="py-3 px-4 w-32 text-center">{{ __('messages.refill') }} (€)</th>
+                        <th class="py-3 px-4 w-32 text-center">{{ __('messages.withdraw') }}</th>
                         <th class="py-3 px-4 w-12 text-center">
                             <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                Update
+                                {{ __('messages.save') }}
                             </button>
                         </th>
                     </tr>

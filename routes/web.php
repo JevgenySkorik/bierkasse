@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NameController;
-
+Route::middleware(App\Http\Middleware\LanguageMiddleware::class)->group(function () {
 Route::get('/', [JournalController::class, 'index'])->middleware(App\Http\Middleware\LanguageMiddleware::class)->name('index');
 Route::get('/login', [AdminController::class, 'login'])->name('login');
 Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
@@ -23,4 +23,5 @@ Route::post('/updateBalances', [JournalController::class, 'updateBalances'])->na
 Route::post('/addName', [JournalController::class, 'addName'])->name('addName');
 Route::post('/updateDebts', [JournalController::class, 'updateDebts'])->name('updateDebts');
 Route::post('/login', [AdminController::class, 'authenticate'])->name('authenticate');
-Route::post('/changeLocale', [App\Http\Controllers\LanguageController::class, 'changeLocale'])->middleware(App\Http\Middleware\LanguageMiddleware::class)->name('changeLocale'); 
+Route::post('/changeLocale', [App\Http\Controllers\LanguageController::class, 'changeLocale'])->name('changeLocale'); 
+});
