@@ -38,8 +38,8 @@
             <ul class="mt-1.5 list-disc list-inside">
                 <li>{{ __('messages.danger_2') }}</li>
                 <li>{{ __('messages.danger_3') }}></li>
+                <li>{{ __('messages.danger_4') }}</li>
             </ul>
-            <span class="font-medium">{{ __('messages.danger_4') }} </span>
         </div>
     </div>
 
