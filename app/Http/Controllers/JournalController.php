@@ -70,11 +70,15 @@ class JournalController extends Controller
             $subTotal = product::where('name', $productName)->first()['price'] * $amounts[$index];
 
             // Deduct payment from client's balance, if it is sufficient
-            if($request->method == 'Debt' && $currentBalance >= $subTotal) {
+            if($request->method == 'Deposit' && $currentBalance >= $subTotal) {
+                print('bbb');
                 $currentBalance -= $subTotal;
                 $newJournalEntry->method = 'Cash';
             }
-
+            elseif($request->method == 'Deposit' && $currentBalance < $subTotal) {
+                print('aaa');
+                $newJournalEntry->method = 'Debt';
+            }
             $newJournalEntry->total = $subTotal;
             $newJournalEntry->notes = $request->notes;
 

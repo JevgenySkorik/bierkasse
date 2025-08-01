@@ -25,6 +25,8 @@ return [
     'journal' => 'Journal',
     'products' => 'Products',
     'debts' => 'Debts',
+    'deposit' => 'Deposit',
+    'Deposit' => 'Deposit',
     'balances' => 'Deposits',
     'export_j' => 'Export journal',
     'export_p' => 'Export products',

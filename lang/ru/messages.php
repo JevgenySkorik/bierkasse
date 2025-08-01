@@ -26,6 +26,8 @@ return [
     'products' => 'Продукты',
     'debts' => 'Долги',
     'balances' => 'Депозиты',
+    'deposit' => 'Депозит',
+    'Deposit' => 'Deposit',
     'export_j' => 'Скачать журнал',
     'export_p' => 'Скачать продукты',
     'logout' => 'Выйти',

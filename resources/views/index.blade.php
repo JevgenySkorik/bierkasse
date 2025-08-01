@@ -53,6 +53,7 @@
                                 <select name="method" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                                     <option value="Cash">{{ __('messages.cash') }}</option>
                                     <option value="Debt">{{ __('messages.debt') }}</option>
+                                    <option value="Deposit">{{ __('messages.deposit') }}</option>
                                 </select>
                             </td>
                             <td class="py-3 px-4">
