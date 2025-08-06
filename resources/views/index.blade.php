@@ -10,21 +10,25 @@
     </header>
 
     <!-- Login Link at Bottom Right -->
-    <div class="w-full max-w-6xl flex justify-end p-4">
-        <a href="{{ route('journal') }}" class="text-yellow-500 font-bold hover:underline">
-            {{ __('messages.edit') }}
-        </a>
+    <div class="w-full max-w-6xl flex flex-row justify-end space-x-4 p-4">
+        <div class="flex-initial">
+            <a href="{{ route('journal') }}" class="text-yellow-500 font-bold hover:underline">
+                {{ __('messages.edit') }}
+            </a>
+        </div>
+        <div class="flex-initial">
+            <form method="post" action="{{ route('changeLocale') }}">
+                {{ csrf_field() }}
+                <button type="submit" name="language" value="ru" class="text-yellow-500 font-bold hover:underline px-2">RU</button>
+                <button type="submit" name="language" value="en" class="text-yellow-500 font-bold hover:underline px-2">EN</button>
+            </form>
+        </div>
     </div>
 
     @include('layouts.alerts')
 
     <div class="w-full max-w-6xl">
         <!-- Table -->
-        <form method="post" action="{{ route('changeLocale') }}">
-        {{ csrf_field() }}
-            <button type="submit" name="language" value="ru">RU</button>
-            <button type="submit" name="language" value="en">EN</button>
-        </form>
         <div class="overflow-x-auto">
             <form method="post" action="{{ route('addJournalEntry') }}" accept-charset="UTF-8">
                 {{ csrf_field() }}

@@ -6,6 +6,8 @@
 
 @include('layouts.alerts')
 
+@vite('resources/js/utils.js')
+
 <div class="pt-4 w-full max-w-6xl">
     <!-- Add new product -->
     <h1 class="text-3xl font-bold text-yellow-500 pt-3 my-3 text-center">{{ __('messages.add_product') }}</h1>
@@ -52,7 +54,9 @@
                         <th class="py-3 px-4 text-center">{{ __('messages.pr_name') }}</th>
                         <th class="py-3 px-4 w-32 text-center">{{ __('messages.price') }}</th>
                         <th class="py-3 px-4 w-32 text-center">{{ __('messages.amount') }}</th>
-                        <th class="py-3 px-4 w-12 text-center">{{ __('messages.delete') }}</th>
+                        <th class="py-3 px-4 text-center">
+                            <input type="button" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded" onclick="enableRemoving()" value="{{ __('messages.delete') }}">
+                        </th>
                         <th class="py-3 px-4 w-12 text-center">
                             <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
                                 {{ __('messages.save') }}

@@ -6,8 +6,19 @@
 
 @include('layouts.alerts')
 
+@vite('resources/js/utils.js')
+
 <div class="pt-8 w-full max-w-6xl">
     <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">{{ __('messages.edit_journal') }}</h1>
+    <div class="flex w-fit p-4 mb-4 mx-auto text-sm rounded-lg bg-zinc-800 text-red-400" role="alert">
+        <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+        </svg>
+        <span class="sr-only">Danger</span>
+        <div>
+            <span class="font-medium">{{ __('messages.danger_5') }}</span>
+        </div>
+    </div>
     <!-- Dashboard Table -->
     <div class="overflow-x-auto">
         <form method="post" action="{{ route('updateJournalEntries') }}" accept-charset="UTF-8">
@@ -23,7 +34,6 @@
                         <th class="py-3 px-4 text-center">{{ __('messages.total') }}</th>
                         <th class="py-3 px-4 text-center">
                             <input type="button" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded" onclick="enableRemoving()" value="{{ __('messages.delete') }}">
-
                         </th>
                         <th class="py-3 px-4 text-center">
                             <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
@@ -48,6 +58,7 @@
                             <select name="entries[{{ $entry->id }}][method]" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                                 <option value="Cash" {{ $entry->method == 'Cash' ? 'selected' : '' }}>{{ __('messages.cash') }}</option>
                                 <option value="Debt" {{ $entry->method == 'Debt' ? 'selected' : '' }}>{{ __('messages.debt') }}</option>
+                                <option value="Deposit" {{ $entry->method == 'Deposit' ? 'selected' : '' }}>{{ __('messages.Deposit') }}</option>
                             </select>
                         </td>
                         <!-- Product -->
@@ -85,19 +96,5 @@
     <!-- Pagination -->
     {{ $journalEntries->links() }}
 </div>
-<script>
-    function enableRemoving() {
-        const checkboxes = document.querySelectorAll('input[type=checkbox]');
-        const isDisabled= checkboxes[0].disabled;
-        checkboxes.forEach((el) => {
-            if(isDisabled) {
-                el.disabled = false;
-            }
-            else {
-                el.checked = false;
-                el.disabled = true;
-            }
-        });
-    }
-</script>
+
 @endsection

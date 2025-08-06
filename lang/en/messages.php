@@ -43,6 +43,7 @@ return [
     'danger_2' => 'Changing the name will change it for all journal entries (including old entries)',
     'danger_3' => 'Changing the price will only affect new journal entries, old entry prices will remain the same',
     'danger_4' => 'Only change quantity when products are recounted',
+    'danger_5' => 'Changing amount will not recalculate total price',
     'edit_products' => 'Edit products',
     'add_client' => 'Add client',
     'balance' => 'Balance',

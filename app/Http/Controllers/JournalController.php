@@ -71,12 +71,10 @@ class JournalController extends Controller
 
             // Deduct payment from client's balance, if it is sufficient
             if($request->method == 'Deposit' && $currentBalance >= $subTotal) {
-                print('bbb');
                 $currentBalance -= $subTotal;
-                $newJournalEntry->method = 'Cash';
+                $newJournalEntry->method = 'Deposit';
             }
             elseif($request->method == 'Deposit' && $currentBalance < $subTotal) {
-                print('aaa');
                 $newJournalEntry->method = 'Debt';
             }
             $newJournalEntry->total = $subTotal;
@@ -143,11 +141,7 @@ class JournalController extends Controller
         // "entries":{"2":{"name":"com! Jevgenijs Skoriks","date":"2024-12-11","method":"Cash","product":"Salty chips","amount":"1","total":"1","notes":null},"1":{"name":"com! Jevgenijs Skoriks","date":"2024-12-11","method":"Cash","product":"Ilguciema","amount":"3","total":"4.5","notes":null}},"save":{"2":"1"}
 
         foreach ($request->entries as $index => $entry) {
-            if(isset($entry['remove'])) {
-                $journalEntry = journal::find($index);
-                $journalEntry->delete();
-                continue;
-            }
+            
             $journalEntry = journal::find($index);
             $journalEntry->name = $entry['name'];
             $journalEntry->product_id = product::where('name', $entry['product'])->first()['id'];
@@ -158,18 +152,56 @@ class JournalController extends Controller
             $currentQuantity  = product::where('name', $entry['product'])->first()['quantity']; // Get current quantity for this product
             $editedProduct = product::where('name', $entry['product'])->first();
             if($entry['amount'] <= $currentQuantity) {
-                
-                $editedProduct->quantity = $currentQuantity + ($oldAmount - $entry['amount']);
+                $newAmount = isset($entry['remove']) ? 0 : $entry['amount']; // Restore product quantity for deleted entry
+                $editedProduct->quantity = $currentQuantity + ($oldAmount - $newAmount);
             }
             $editedProduct->save();
-            //
-            $journalEntry->date = $entry['date'];
-            $journalEntry->method = $entry['method'];
-            $journalEntry->total = $entry['total'];
-            $journalEntry->notes = $entry['notes'];
-            $journalEntry->save();
+
+            //Update clients' balance
+            $clientEntry = name::where('name', $entry['name'])->first();
+            $currentBalance = $clientEntry->balance;
+            
+            //Update balance when method is changed to deposit
+            if($entry['method'] == 'Deposit' && $journalEntry->method != 'Deposit' && !isset($entry['remove'])) {
+                if($currentBalance >= $entry['total']) {
+                    $clientEntry->balance -= $entry['total'];
+                    $journalEntry->method = 'Deposit';
+                }
+            }
+            //Update balance when total price is changes
+            else if($entry['method'] == 'Deposit' && $journalEntry->method == 'Deposit') {
+                if($currentBalance >= $entry['total']) {
+                    $clientEntry->balance += $journalEntry['total'] - $entry['total'];
+                    $journalEntry->method = 'Deposit';
+                }
+                else {
+                    $journalEntry->method = 'Debt';
+                }
+            }
+            //Restore balance for deleted entries, or when method changed to cash or debt
+            elseif(($entry['method'] != 'Deposit' || isset($entry['remove'])) && $journalEntry->method == 'Deposit') {
+                $clientEntry->balance += $entry['total'];   
+            }
+            
+            $clientEntry->save();
+
+            if(!isset($entry['remove'])) {
+                $journalEntry->date = $entry['date'];
+                //Changing method to deposit required updating balance
+                if($entry['method'] != 'Deposit') {
+                    $journalEntry->method = $entry['method']; 
+                }
+                $journalEntry->total = $entry['total'];
+                $journalEntry->notes = $entry['notes'];
+                $journalEntry->save();
+                
+            }
+            else {
+                $journalEntry->delete();
+            }
         }
-        session()->flash('success', __('messages.journal_upd'));
+        session()->flash('success', __('messages.balance_upd'));
+
         return redirect('journal');
     }
 

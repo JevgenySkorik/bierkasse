@@ -35,18 +35,6 @@
                 <li>
                     <a href="{{ route('logout') }}" class="block py-2 px-3 text-red-500 hover:text-red-600 rounded md:p-0">{{ __('messages.logout') }}</a>
                 </li>
-                <li>
-                    <form method="post" action="{{ route('changeLocale') }}">
-                        {{ csrf_field() }}
-                        <button type="submit" name="language" value="en">EN</button>
-                    </form>
-                </li>
-                <li>
-                    <form method="post" action="{{ route('changeLocale') }}">
-                        {{ csrf_field() }}
-                        <button type="submit" name="language" value="ru">RU</button>
-                    </form>
-                </li>
             </ul>
         </div>
     </div>
