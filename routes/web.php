@@ -6,6 +6,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NameController;
 Route::middleware(App\Http\Middleware\LanguageMiddleware::class)->group(function () {
 Route::get('/', [JournalController::class, 'index'])->middleware(App\Http\Middleware\LanguageMiddleware::class)->name('index');
+Route::get('/mobile/{productID?}', [JournalController::class, 'mobile'])->name('mobile');
+Route::get('/my-debt', [AdminController::class, 'mydebt'])->name('mydebt');
 Route::get('/login', [AdminController::class, 'login'])->name('login');
 Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
 Route::get('/autocomplete', [NameController::class, 'autocomplete'])->name('autocomplete');

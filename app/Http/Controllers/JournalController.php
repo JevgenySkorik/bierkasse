@@ -9,6 +9,7 @@ use App\Models\name;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cookie;
 
 class JournalController extends Controller
 {
@@ -22,10 +23,52 @@ class JournalController extends Controller
         ]);
     }
 
+    public function mobile(Request $request, $param = null): View {
+        $preselectedProds = [];
+        if($param != null) {
+            $productIDs = explode('+', $param);
+            foreach($productIDs as $prodID) {
+                $productEntry = product::where('id', $prodID)->first();
+                $preSelected = [
+                    "name" => $productEntry->name,
+                    "price" => $productEntry->price,
+                    "quantity" => $productEntry->quantity
+                ];
+                $preselectedProds[] = $preSelected;
+            }
+        }
+        $balance = 0;
+        $debt = 0;
+        if(Cookie::has('clientName')){
+            $client = name::where('name', Cookie::get('clientName'))->first();
+            if($client !== null) {
+                $balance = name::where('name', Cookie::get('clientName'))->first()->balance;
+                $debt = 0;
+                $journalEntries = journal::where('method','Debt')->where('name', $client->name)->get();
+                foreach($journalEntries as $journalEntry) {
+                    $debt += $journalEntry->total;
+                }
+            }
+        }
+        else {
+            $debt = "-";
+            $balance = "-";
+        }
+        return view('mobile', [
+            'products' => product::all(),
+            'preselectedProds' => $preselectedProds,
+            'clientName' => $request->cookie('clientName', ''),
+            'balance' => "€ " . $balance,
+            'debt' => "€ " . $debt
+        ]);
+    }
+
     public function addJournalEntry(Request $request) : RedirectResponse {
         
         $clientName = explode(' (', $request->name)[0]; //Split client's balance from name
-
+        if(isset($request['isMobile'])) {
+            Cookie::queue('clientName', $clientName, 60*9999);
+        }
         // If new name, add to names table(for autocomplete)
         $nameExists = name::where('name', $clientName)->exists();
         if (!$nameExists) {
@@ -85,6 +128,9 @@ class JournalController extends Controller
 
         $nameEntry->balance = $currentBalance;
         $nameEntry->save();
+        if (isset($request['isMobile'])) {
+            return redirect('/mobile');
+        }
         return redirect('/');
     }
 

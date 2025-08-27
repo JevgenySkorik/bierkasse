@@ -61,5 +61,6 @@ return [
     'balance_upd' => 'Balances updated successfully!',
     'error_prod' => 'Cannot create product, identical product already exists.',
     'prod_create' => 'Product created successfully!',
-    'error_auth' => 'The provided credentials do not match our records.'
+    'error_auth' => 'The provided credentials do not match our records.',
+    'nameNotFound' => 'No records for this name'
 ];

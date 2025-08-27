@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\product;
 use App\Models\journal;
 use App\Models\name;
-
+use Illuminate\Support\Facades\Cookie;
 use function Psy\debug;
 
 class AdminController extends Controller
@@ -89,6 +89,35 @@ class AdminController extends Controller
         return view('debts', ['debts' => $debts, 'totals' => $totals]);
     }
 
+    public function mydebt(Request $request) {
+        $debts = [];
+        $total = 0;
+        $client = "-";
+        if(Cookie::has('clientName')){
+            $client = name::where('name', Cookie::get('clientName'))->first();
+            if($client !== null) {
+                $debt = 0;
+                $journalEntries = journal::with('product:id,name')
+                ->select(['id', 'name as client_name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+                ->where('method', 'Debt')
+                ->where('name', $client->name)
+                ->get();
+                foreach($journalEntries as $journalEntry) {
+                    $debt += $journalEntry->total;
+                    $debts[] = $journalEntry->toArray();
+                }
+            }
+        }
+        else {
+            $debt = "-";
+            $balance = "-";
+        }
+        return view('mydebt', [
+            "clientName" => $client->name,
+            "totalDebt" => $debt,
+            "debts" => $debts
+        ]);
+    }
     public function export($type)
     {
         if($type == 'journal') {
