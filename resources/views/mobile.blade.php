@@ -24,7 +24,7 @@
     </div>
     @include('layouts.alerts')
 
-    <div class="w-full max-w-6xl">
+    <div class="w-full max-w-6xl" id="content">
         <!-- Table -->
         <div class="overflow-x-auto">
             <form method="post" action="{{ route('addJournalEntry') }}" accept-charset="UTF-8">
@@ -132,9 +132,7 @@
     </script>
     <script>
         const products = @json($products); // Convert PHP products array to JavaScript
-        const body = document.getElementsByTagName("body")[0];
 
-        
         function addProductRow() {
             const container = document.getElementById('product-container');
 
@@ -166,7 +164,7 @@
         }
 
         function updateTotal() {
-                var total = document.getElementById('total');
+            var total = document.getElementById('total');
             var newTotal = 0.0;
             var products = document.getElementsByName('products[]');
             var amounts = document.getElementsByName('amounts[]');
@@ -174,13 +172,17 @@
             products.forEach((product, index) => {
                 var productPrice = product.value.split('|')[1];
                 var productAmount = amounts[index].value;
-                if(!isNaN(Number(productPrice))) {
+                if(!isNaN(Number(productPrice)) || total.innerHTML === "") {
                     newTotal = newTotal + (Number(productPrice) * Number(productAmount));
+                    if(total.innerHTML === "") {
+                        newTotal = 0;
+                    }
                     total.innerHTML = `{{__('messages.total')}}: € ${newTotal}`;
                 }
             });
         }
-        body.addEventListener("load", updateTotal(), false);
+
+        window.addEventListener('load', updateTotal);
     </script>
 
 @endsection
