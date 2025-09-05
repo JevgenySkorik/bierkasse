@@ -6,16 +6,23 @@
 
 @include('layouts.alerts')
 
+@vite('resources/js/utils.js')
+
 <div class="pt-4 w-full max-w-6xl">
 
-    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">Debts</h1>
-
+    <h1 class="text-3xl font-bold text-yellow-500 my-3 text-center">{{ __('messages.debts') }}</h1>
+    <div class="flex justify-center">
+        <button class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded" onclick="sortDebts()">
+            <img src="{{ asset('sort.png') }}" alt="Sort" class="h-5 w-5">
+        </button>
+    </div>
+    <br/>
     <div class="mx-auto max-w-screen-lg">
         <div class="divide-y divide-stone-700 overflow-hidden rounded-lg border border-zinc-600 bg-white dark:bg-zinc-800 shadow-sm">
             @foreach ($debts as $name => $debt)
             <details class="group">
                 <summary class="flex cursor-pointer list-none items-center justify-between p-4 font-medium text-gray-100 group-open:bg-zinc-900/20">
-                    <p>{{ $name }} - <span class="text-lg text-red-300">&euro;  {{ $totals[$name] }}</span></p>
+                    <p>{{ $name }} - <span class="text-lg text-red-300 debt-value">&euro;  {{ $totals[$name] }}</span></p>
                     <div class="text-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block h-5 w-5 transition-all duration-300 group-open:rotate-180">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -28,13 +35,13 @@
                         <table class="min-w-full text-center table-auto bg-zinc-700 shadow-lg rounded-lg">
                             <thead>
                                 <tr class="bg-yellow-600 text-gray-100">
-                                    <th class="py-3 px-4 text-center">Date</th>
-                                    <th class="py-3 px-4 text-center">Product</th>
-                                    <th class="py-3 px-4 text-center">Total</th>
-                                    <th class="py-3 px-4 text-center">Notes</th>
+                                    <th class="py-3 px-4 text-center">{{ __('messages.date') }}</th>
+                                    <th class="py-3 px-4 text-center">{{ __('messages.product') }}</th>
+                                    <th class="py-3 px-4 text-center">{{ __('messages.total') }}</th>
+                                    <th class="py-3 px-4 text-center">{{ __('messages.notes') }}</th>
                                     <th class="py-3 px-4 text-center">
                                         <button type="submit" value="1" class="bg-yellow-700 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">
-                                            Mark as paid
+                                            {{ __('messages.mark_paid') }}
                                         </button>
                                     </th>
                                 </tr>
@@ -71,8 +78,6 @@
             @endforeach
         </div>
     </div>
-
 </div>
-
 
 @endsection
