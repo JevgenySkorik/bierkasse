@@ -18,7 +18,7 @@
     </div>
     <br/>
     <div class="mx-auto max-w-screen-lg">
-        <div class="divide-y divide-stone-700 overflow-hidden rounded-lg border border-zinc-600 bg-white dark:bg-zinc-800 shadow-sm">
+        <div class="divide-y divide-stone-700 overflow-hidden rounded-lg border border-zinc-600 bg-zinc-800 dark:bg-zinc-800 shadow-sm">
             @foreach ($debts as $name => $debt)
             <details class="group">
                 <summary class="flex cursor-pointer list-none items-center justify-between p-4 font-medium text-gray-100 group-open:bg-zinc-900/20">
@@ -47,6 +47,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr class="border-t border-gray-600">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="py-3 px-4">{{ __('messages.selectAll') }}<span>&nbsp;&nbsp;&nbsp;</span><input class="selectAll" type="checkbox" class="text-center"></td>
+                                </tr>
                                 @foreach ($debt as $debtEntry)
                                 <tr class="border-t border-gray-600">
                                     <!-- Date -->
@@ -65,7 +72,7 @@
                                     <td class="py-3 px-4">
                                         <p>{{ $debtEntry['notes'] }}</p>
                                     </td>
-                                    <td class="py-3 px-4">
+                                    <td class="py-3 px-4 markPaid">
                                         <input name="debts[{{ $debtEntry['id'] }}][pay]" type="checkbox" class="text-center">
                                     </td>
                                 </tr>
@@ -79,5 +86,20 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.querySelectorAll('.selectAll').forEach((el) => {
+        el.addEventListener('click', (event)=>{
+            const trs = el.closest('tbody').querySelectorAll('tr');
+            trs.forEach((tr) => {
+                const td = tr.querySelector('.markPaid');
+                if(td) {
+                    const checkbox = td.querySelector('input') 
+                    if(checkbox) {
+                        checkbox.checked = el.checked;
+                    }
+                }
+            });
+        });
+    });
+</script>
 @endsection
