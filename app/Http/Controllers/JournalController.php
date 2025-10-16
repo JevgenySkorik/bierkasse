@@ -185,19 +185,21 @@ class JournalController extends Controller
         \Log::debug(json_encode($request->all()));
 
         // "entries":{"2":{"name":"com! Jevgenijs Skoriks","date":"2024-12-11","method":"Cash","product":"Salty chips","amount":"1","total":"1","notes":null},"1":{"name":"com! Jevgenijs Skoriks","date":"2024-12-11","method":"Cash","product":"Ilguciema","amount":"3","total":"4.5","notes":null}},"save":{"2":"1"}
-
+        
         foreach ($request->entries as $index => $entry) {
+            $journalEntry = journal::find($index);
             if(isset($entry['remove'])) {
                 $journalEntry->delete();
             }
             else {
-                $journalEntry = journal::find($index);
                 $journalEntry->name = $entry['name'];
                 $journalEntry->product_id = product::where('name', $entry['product'])->first()['id'];
                 $journalEntry->method = $entry['method'];
                 $journalEntry->amount = $entry['amount'];
                 $journalEntry->date = $entry['date'];
                 $journalEntry->total = $entry['total'];
+                $journalEntry->notes = $entry['notes'];
+                $journalEntry->save();
             }
         }
         session()->flash('success', __('messages.journal_upd'));
