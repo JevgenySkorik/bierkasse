@@ -30,6 +30,7 @@ class JournalController extends Controller
             foreach($productIDs as $prodID) {
                 $productEntry = product::where('id', $prodID)->first();
                 $preSelected = [
+                    "id" => $productEntry->id,
                     "name" => $productEntry->name,
                     "price" => $productEntry->price,
                     "quantity" => $productEntry->quantity
@@ -63,7 +64,7 @@ class JournalController extends Controller
         ]);
     }
 
-    public function addJournalEntry(Request $request) : RedirectResponse {
+  public function addJournalEntry(Request $request) : RedirectResponse {
         
         $clientName = explode(' (', $request->name)[0]; //Split client's balance from name
         if(isset($request['isMobile'])) {
@@ -89,28 +90,58 @@ class JournalController extends Controller
         $currentBalance = $nameEntry->balance;
 
         foreach ($products as $index => $product) {
-            $productName = explode('|', $product)[0];
+            $productID = (int) explode('|', $product)[0];
+
+            // single lookup by id
+            $productModel = product::find($productID);
+
+            // --- CHANGED LOGIC START ---
+            
+            $journalProductID = $productModel->id; 
+            // Start a collection of products to update, beginning with the selected one
+            $productsToUpdate = collect([$productModel]); 
+
+            // 1. Upstream Check: If selected product points to another (Child -> Parent)
+            if ($productModel->alternative_for) {
+                $parent = product::find($productModel->alternative_for);
+                if ($parent) {
+                    $journalProductID = $parent->id; // Journal uses Parent ID
+                    $productsToUpdate->push($parent);
+                }
+            }
+
+            // 2. Downstream Check: If other products point to this one (Parent -> Child)
+            // This ensures sync works even if the referenced (original) product is selected
+            $children = product::where('alternative_for', $productModel->id)->get();
+            $productsToUpdate = $productsToUpdate->merge($children);
+
+            // Ensure unique IDs (prevents double processing if relationships are complex)
+            $productsToUpdate = $productsToUpdate->unique('id');
 
             $newJournalEntry = new journal;
             $newJournalEntry->name = $clientName;
-            $newJournalEntry->product_id = product::where('name', $productName)->first()['id'];
+            $newJournalEntry->product_id = $journalProductID; 
             $newJournalEntry->amount = $amounts[$index];
 
-            //Update product quantity
-            $currentQuantity  = product::where('name', $productName)->first()['quantity']; // Get current quantity for this product
-            $editedProduct = product::where('name', $productName)->first();
+            // Apply quantity deduction to ALL involved products
+            foreach ($productsToUpdate as $productToEdit) {
+                $currentQuantity = $productToEdit->quantity; 
+                
+                if($amounts[$index] < $currentQuantity) {
+                    $productToEdit->quantity = $currentQuantity - $amounts[$index];
+                }
+                else {
+                    $productToEdit->quantity = 0;
+                }
+                $productToEdit->save();
+            }
 
-            if($amounts[$index] < $currentQuantity) {
-                $editedProduct->quantity = $currentQuantity - $amounts[$index];
-            }
-            else {
-                $editedProduct->quantity = 0;
-            }
-            $editedProduct->save();
 
             $newJournalEntry->date = $request->date;
             $newJournalEntry->method = $request->method;
-            $subTotal = product::where('name', $productName)->first()['price'] * $amounts[$index];
+            
+            // Price is always taken from the originally selected product
+            $subTotal = $productModel->price * $amounts[$index];
 
             // Deduct payment from client's balance, if it is sufficient
             if($request->method == 'Deposit' && $currentBalance >= $subTotal) {
@@ -133,7 +164,6 @@ class JournalController extends Controller
         }
         return redirect('/');
     }
-
     public function addProductEntry(Request $request) : RedirectResponse {
         \Log::debug(json_encode($request->all()));
 
@@ -193,7 +223,7 @@ class JournalController extends Controller
             }
             else {
                 $journalEntry->name = $entry['name'];
-                $journalEntry->product_id = product::where('name', $entry['product'])->first()['id'];
+                $journalEntry->product_id = (int) $entry['product'];
                 $journalEntry->method = $entry['method'];
                 $journalEntry->amount = $entry['amount'];
                 $journalEntry->date = $entry['date'];
