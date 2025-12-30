@@ -19,8 +19,10 @@
         <div class="flex-initial">
             <form method="post" action="{{ route('changeLocale') }}">
                 {{ csrf_field() }}
-                <button type="submit" name="language" value="ru" class="text-yellow-500 font-bold hover:underline px-2">RU</button>
-                <button type="submit" name="language" value="en" class="text-yellow-500 font-bold hover:underline px-2">EN</button>
+                <button type="submit" name="language" value="ru"
+                    class="text-yellow-500 font-bold hover:underline px-2">RU</button>
+                <button type="submit" name="language" value="en"
+                    class="text-yellow-500 font-bold hover:underline px-2">EN</button>
             </form>
         </div>
     </div>
@@ -48,10 +50,13 @@
                         <!-- Form Row -->
                         <tr class="border-t border-gray-600">
                             <td class="py-3 px-4">
-                                <input name="name" id="autocomplete-name" type="text" placeholder="{{ __('messages.enter_name') }}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="name" id="autocomplete-name" type="text"
+                                    placeholder="{{ __('messages.enter_name') }}" required
+                                    class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4">
-                                <input name="date" type="date" required value="<?php echo date("Y-m-d"); ?>" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="date" type="date" required value="<?php echo date("Y-m-d"); ?>"
+                                    class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4">
                                 <select name="method" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
@@ -64,40 +69,48 @@
                                 <div id="product-container" class="space-y-2">
                                     <!-- Initial Product Row -->
                                     <div class="flex space-x-2 product-row">
-                                        <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
+                                        <select name="products[]" onchange="updateTotal()" required
+                                            class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
                                             <option style="display:none;"></option>
                                             @foreach ($products as $product)
-                                            <option value="{{ $product->name }}|{{ $product->price }}">
-                                                {{ $product->name }} (€{{ number_format($product->price, 2) }}) [{{ $product->quantity }}]
-                                            </option>
+                                                <option value="{{ $product->name }}|{{ $product->price }}">
+                                                    {{ $product->name }} (€{{ number_format($product->price, 2) }})
+                                                    [{{ $product->quantity }}]
+                                                </option>
                                             @endforeach
                                         </select>
-                                        <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
-                                        <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row hidden">-</button>
+                                        <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()"
+                                            required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
+                                        <button type="button"
+                                            class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row hidden">-</button>
                                     </div>
                                 </div>
-                                <button type="button" onclick="addProductRow()" class="mt-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold py-1 px-4 rounded">+</button>
+                                <button type="button" onclick="addProductRow()"
+                                    class="mt-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold py-1 px-4 rounded">+</button>
                             </td>
                             <td class="py-3 px-4">
-                                <input id="total" type="text" value="0" disabled class="bg-zinc-700 text-gray-400 w-full p-2 rounded">
+                                <input id="total" type="text" value="0" disabled
+                                    class="bg-zinc-700 text-gray-400 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4">
-                                <input name="notes" type="text" placeholder="{{ __('messages.notes') }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="notes" type="text" placeholder="{{ __('messages.notes') }}"
+                                    class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                             <td class="py-3 px-4 text-center">
-                                <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">{{ __('messages.submit') }}</button>
+                                <button type="submit"
+                                    class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 font-bold py-2 px-4 rounded">{{ __('messages.submit') }}</button>
                             </td>
 
                         </tr>
                         @foreach ($journalEntries as $entry)
-                        <tr class="border-t border-gray-600">
-                            <td class="py-3 px-4">{{ $entry->name }}</td>
-                            <td class="py-3 px-4">{{ $entry->date }}</td>
-                            <td class="py-3 px-4">{{ __('messages.' . $entry->method) }}</td>
-                            <td class="py-3 px-4">{{ $entry->amount }}x {{ $entry->product->name }}</td>
-                            <td class="py-3 px-4">&euro; {{ $entry->total }}</td>
-                            <td class="py-3 px-4">{{ $entry->notes }}</td>
-                        </tr>
+                            <tr class="border-t border-gray-600">
+                                <td class="py-3 px-4">{{ $entry->name }}</td>
+                                <td class="py-3 px-4">{{ $entry->date }}</td>
+                                <td class="py-3 px-4">{{ __('messages.' . $entry->method) }}</td>
+                                <td class="py-3 px-4">{{ $entry->amount }}x {{ $entry->product->name }}</td>
+                                <td class="py-3 px-4">&euro; {{ $entry->total }}</td>
+                                <td class="py-3 px-4">{{ $entry->notes }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -108,15 +121,15 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#autocomplete-name').autocomplete({
-                source: function(request, response) {
+                source: function (request, response) {
                     $.ajax({
                         url: "{{ route('autocomplete') }}",
                         data: {
                             query: request.term
                         },
-                        success: function(data) {
+                        success: function (data) {
                             response(data);
                         }
                     });
@@ -142,17 +155,17 @@
             });
 
             newRow.innerHTML = `
-                    <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
-                        ${productOptions}
-                    </select>
-                    <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
-                    <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row">-</button>
-                `;
+                        <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
+                            ${productOptions}
+                        </select>
+                        <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
+                        <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row">-</button>
+                    `;
 
             container.appendChild(newRow);
 
             // Add event listener to the remove button
-            newRow.querySelector('.remove-row').addEventListener('click', function() {
+            newRow.querySelector('.remove-row').addEventListener('click', function () {
                 newRow.remove();
                 updateTotal();
             });

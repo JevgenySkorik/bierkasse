@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         user::create([
             'name' => 'admin',
             'email' => 'jevgeny.skorik@gmail.com',
-            'password' => Hash::make('Nsw223Sd'),
+            'password' => Hash::make('fuchs'),
         ]);
         product::create(['name' => 'Ilguciema', 'price' => 1.5]);
         product::create(['name' => 'Salty chips', 'price' => 1]);

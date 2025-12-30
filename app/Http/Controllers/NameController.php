@@ -11,13 +11,13 @@ class NameController extends Controller
     {
         \Log::debug("autocomplete request");
         $query = $request->get('query');
-        
+
         $names = name::where('name', 'LIKE', "%{$query}%")
-        ->get(['name', 'balance'])
-        ->map(function ($item) {
-            $fmt = number_format($item->balance, 1);
-            return "{$item->name} (€$fmt)";
-        });
+            ->get(['name', 'balance'])
+            ->map(function ($item) {
+                $fmt = number_format($item->balance, 1);
+                return "{$item->name} (€$fmt)";
+            });
         return response()->json($names);
     }
 

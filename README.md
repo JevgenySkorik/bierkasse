@@ -13,15 +13,7 @@ Some other features included are:
 
 ## Todo
 
-### Big tasks
-- [ ] **Russian language** (add ability to switch between russian and english)
-- [ ] Fix hamburger menu for mobile view (or just redo it completely)
-
-### Small tasks
-- [ ] Fix error when clicking "Mark as paid" on debts page with no debts selected
-- [ ] Ability to delete journal entries
-- [ ] Sort debts from biggest to lowest on the debts page
-- [ ] Move js scripts to separate files
-
-№№№ Bugs
-- [ ] If left alone for ~10 mins page needs to be refreshed before entering journal entry
+- [ ] Refactor mobile and addJournalEntry
+- [ ] Improve mobile view
+- [ ] Allow users to mark their debts as paid
+- [ ] Fix product export

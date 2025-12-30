@@ -2,8 +2,6 @@
 
 @section('content')
 
-
-
     <!-- Login Link at Bottom Right -->
     <div class="w-full max-w-6xl flex flex-row justify-between space-x-4 p-4">
         <div class="flex flex-row items-center space-x-4">
@@ -13,14 +11,18 @@
         <div class="flex-initial flex items-center">
             <form method="post" action="{{ route('changeLocale') }}">
                 {{ csrf_field() }}
-                <button type="submit" name="language" value="ru" class="text-yellow-500 font-bold hover:underline px-2">RU</button>
-                <button type="submit" name="language" value="en" class="text-yellow-500 font-bold hover:underline px-2">EN</button>
+                <button type="submit" name="language" value="ru"
+                    class="text-yellow-500 font-bold hover:underline px-2">RU</button>
+                <button type="submit" name="language" value="en"
+                    class="text-yellow-500 font-bold hover:underline px-2">EN</button>
             </form>
         </div>
     </div>
     <div class="w-full max-w-6xl flex flex-row justify-between space-x-4 p-4">
         <div class="flex-initial text-l text-green-500">{{ __('messages.balance') }} : {{$balance}}</div>
-        <div class="flex-initial text-l text-red-500 underline"><a href="/my-debt">{{ __('messages.debt') }} : {{$debt}}</a></div>
+        <div class="flex-initial text-l text-red-500 underline"><a href="{{ route('myDebt') }}">{{ __('messages.debt') }} :
+                {{$debt}}</a>
+        </div>
     </div>
     @include('layouts.alerts')
 
@@ -40,12 +42,15 @@
                         <!-- Form Row -->
                         <tr class="border-t border-gray-600">
                             <td class="py-3 px-4">
-                                <input name="name" id="autocomplete-name" type="text" placeholder="{{ __('messages.enter_name') }}" value="{{$clientName}}" required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="name" id="autocomplete-name" type="text"
+                                    placeholder="{{ __('messages.enter_name') }}" value="{{$clientName}}" required
+                                    class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                         </tr>
                         <tr>
                             <td class="py-3 px-4">
-                                <input name="date" type="date" required value="<?php echo date("Y-m-d"); ?>" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="date" type="date" required value="<?php echo date("Y-m-d"); ?>"
+                                    class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                         </tr>
                         <tr>
@@ -61,47 +66,61 @@
                             <td class="py-3 px-4">
                                 <div id="product-container" class="space-y-2">
                                     @foreach ($preselectedProds as $preselectedProd)
-                                    <!-- Initial Product Row -->
-                                    <div class="flex space-x-2 product-row">
-                                        <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
-                                            <option style="display:none;"></option>
-                                            <option value="{{ $preselectedProd['name'] }} | {{$preselectedProd['price']}}" selected>
-                                                {{ $preselectedProd['name'] }} (€{{ number_format($preselectedProd['price'], 2) }}) [{{ $preselectedProd['quantity'] }}]
-                                            </option>
-                                            @foreach ($products as $product)
-                                            <option value="{{ $product->name }}|{{ $product->price }}">
-                                                {{ $product->name }} (€{{ number_format($product->price, 2) }}) [{{ $product->quantity }}]
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                        <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
-                                        <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row hidden">-</button>
-                                    </div>
-                                    @endforeach
-                                    <div class="flex space-x-2 product-row">
-                                            <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
+                                        <!-- Initial Product Row -->
+                                        <div class="flex space-x-2 product-row">
+                                            <select name="products[]" onchange="updateTotal()" required
+                                                class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
                                                 <option style="display:none;"></option>
-                                                @foreach ($products as $product)
-                                                <option value="{{ $product->name }}|{{ $product->price }}">
-                                                    {{ $product->name }} (€{{ number_format($product->price, 2) }}) [{{ $product->quantity }}]
+                                                <option value="{{ $preselectedProd['name'] }} | {{$preselectedProd['price']}}"
+                                                    selected>
+                                                    {{ $preselectedProd['name'] }}
+                                                    (€{{ number_format($preselectedProd['price'], 2) }})
+                                                    [{{ $preselectedProd['quantity'] }}]
                                                 </option>
+                                                @foreach ($products as $product)
+                                                    <option value="{{ $product->name }}|{{ $product->price }}">
+                                                        {{ $product->name }} (€{{ number_format($product->price, 2) }})
+                                                        [{{ $product->quantity }}]
+                                                    </option>
                                                 @endforeach
                                             </select>
-                                            <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
-                                            <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row hidden">-</button>
+                                            <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()"
+                                                required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
+                                            <button type="button"
+                                                class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row hidden">-</button>
                                         </div>
+                                    @endforeach
+                                    <div class="flex space-x-2 product-row">
+                                        <select name="products[]" onchange="updateTotal()" required
+                                            class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
+                                            <option style="display:none;"></option>
+                                            @foreach ($products as $product)
+                                                <option value="{{ $product->name }}|{{ $product->price }}">
+                                                    {{ $product->name }} (€{{ number_format($product->price, 2) }})
+                                                    [{{ $product->quantity }}]
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()"
+                                            required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
+                                        <button type="button"
+                                            class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row hidden">-</button>
                                     </div>
-                                <button type="button" onclick="addProductRow()" class="mt-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold py-1 px-4 rounded">+</button>
+                                </div>
+                                <button type="button" onclick="addProductRow()"
+                                    class="mt-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold py-1 px-4 rounded">+</button>
                             </td>
                         </tr>
                         <tr>
                             <td class="py-3 px-4">
-                                <input name="notes" type="text" placeholder="{{ __('messages.notes') }}" class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                <input name="notes" type="text" placeholder="{{ __('messages.notes') }}"
+                                    class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                             </td>
                         </tr>
                         <tr>
                             <td class="py-3 px-4 text-center">
-                                <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 text-3xl font-bold py-2 px-4 rounded">{{ __('messages.submit') }}</button>
+                                <button type="submit"
+                                    class="bg-yellow-600 hover:bg-yellow-500 text-gray-100 text-3xl font-bold py-2 px-4 rounded">{{ __('messages.submit') }}</button>
                             </td>
                         </tr>
                     </tbody>
@@ -113,15 +132,15 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#autocomplete-name').autocomplete({
-                source: function(request, response) {
+                source: function (request, response) {
                     $.ajax({
                         url: "{{ route('autocomplete') }}",
                         data: {
                             query: request.term
                         },
-                        success: function(data) {
+                        success: function (data) {
                             response(data);
                         }
                     });
@@ -147,17 +166,17 @@
             });
 
             newRow.innerHTML = `
-                    <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
-                        ${productOptions}
-                    </select>
-                    <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
-                    <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row">-</button>
-                `;
+                                <select name="products[]" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-32 p-2 rounded">
+                                    ${productOptions}
+                                </select>
+                                <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()" required class="bg-zinc-600 text-gray-200 w-16 p-2 rounded">
+                                <button type="button" class="bg-red-600 hover:bg-red-700 text-gray-100 px-2 rounded remove-row">-</button>
+                            `;
 
             container.appendChild(newRow);
 
             // Add event listener to the remove button
-            newRow.querySelector('.remove-row').addEventListener('click', function() {
+            newRow.querySelector('.remove-row').addEventListener('click', function () {
                 newRow.remove();
                 updateTotal();
             });
@@ -172,9 +191,9 @@
             products.forEach((product, index) => {
                 var productPrice = product.value.split('|')[1];
                 var productAmount = amounts[index].value;
-                if(!isNaN(Number(productPrice)) || total.innerHTML === "") {
+                if (!isNaN(Number(productPrice)) || total.innerHTML === "") {
                     newTotal = newTotal + (Number(productPrice) * Number(productAmount));
-                    if(total.innerHTML === "") {
+                    if (total.innerHTML === "") {
                         newTotal = 0;
                     }
                     total.innerHTML = `{{__('messages.total')}}: € ${newTotal}`;

@@ -9,7 +9,6 @@ use App\Models\product;
 use App\Models\journal;
 use App\Models\name;
 use Illuminate\Support\Facades\Cookie;
-use function Psy\debug;
 
 class AdminController extends Controller
 {
@@ -62,9 +61,10 @@ class AdminController extends Controller
             'productEntries' => product::orderBy('id', 'DESC')->paginate(15),
         ]);
     }
-    
-    public function balances() {
-        return view('balances', ['names' => name::orderBy('id', 'DESC')->paginate(10),]);
+
+    public function balances()
+    {
+        return view('balances', ['names' => name::orderBy('id', 'DESC')->paginate(10)]);
     }
 
     public function debts()
@@ -75,124 +75,96 @@ class AdminController extends Controller
             ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
             ->where('method', 'Debt')
             ->get();
-        
+
         foreach ($journalEntries as $entry) {
             $debts[$entry['name']][] = $entry->toArray();
         }
-        foreach($debts as $name => $debtor) {
+        foreach ($debts as $name => $debtor) {
             $totals[$name] = 0;
-            foreach($debtor as $debt) {
+            foreach ($debtor as $debt) {
                 $totals[$name] += $debt['total'];
             }
         }
-
         return view('debts', ['debts' => $debts, 'totals' => $totals]);
     }
 
-    public function mydebt(Request $request) {
+    public function myDebt(Request $request)
+    {
+        $debt = 0;
         $debts = [];
-        $total = 0;
-        $client = "-";
-        if(Cookie::has('clientName')){
+        if (Cookie::has('clientName')) {
             $client = name::where('name', Cookie::get('clientName'))->first();
-            if($client !== null) {
-                $debt = 0;
-                $journalEntries = journal::with('product:id,name')
-                ->select(['id', 'name as client_name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+        }
+        if ($client) {
+            $journalEntries = journal::with('product:id,name')
+                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
                 ->where('method', 'Debt')
                 ->where('name', $client->name)
                 ->get();
-                foreach($journalEntries as $journalEntry) {
-                    $debt += $journalEntry->total;
-                    $debts[] = $journalEntry->toArray();
-                }
+            foreach ($journalEntries as $journalEntry) {
+                $debt += $journalEntry->total;
+                $debts[] = $journalEntry->toArray();
             }
         }
-        else {
-            $debt = "-";
-            $balance = "-";
-        }
         return view('mydebt', [
-            "clientName" => $client->name,
-            "totalDebt" => $debt,
+            "clientName" => $client ? $client->name : null,
+            "totalDebt" => $debt ?? null,
             "debts" => $debts
         ]);
     }
-    public function export($type)
+    public function exportProducts()
     {
-        if($type == 'journal') {
-            $data = [];
-            $journalEntries = journal::with('product:id,name')
-                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
-                ->get();
+        $data = [];
+        $productEntries = product::select(['id', 'name', 'quantity'])->get();
+        $filename = "products_" . date("d-m-Y_H-i-s") . '_export.csv';
 
-            $filename = "journal_" . date("d-m-Y_H-i-s") . '_export.csv';
-
-            foreach ($journalEntries as $entry) {
-                $data[] = [
-                    'id' => $entry['id'],
-                    'name' => $entry['name'],
-                    'date' => $entry['date'],
-                    'method' => $entry['method'],
-                    'amount' => $entry['amount'],
-                    'product' => $entry['product']['name'],
-                    'total' => $entry['total'],
-                    'notes' => $entry['notes'],
-                ];
-            }
-            // Set headers to prompt download
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="' . $filename . '"');
-
-            // Open output stream
-            $output = fopen('php://output', 'w');
-
-            // Add CSV header
-            fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes']);
-
-            // Add data to CSV
-            foreach ($data as $row) {
-                fputcsv($output, $row);
-            }
-
-            // Close output stream
-            fclose($output);
-            exit;
-            return back();
+        foreach ($productEntries as $entry) {
+            $data[] = [
+                'id' => $entry['id'],
+                'name' => $entry['name'],
+                'quantity' => $entry['quantity']
+            ];
         }
-        elseif($type == 'products') {;
-            $data = [];
 
-
-            $productEntries = product::select(['id', 'name', 'quantity'])->get();
-            $filename = "products_ " . date("d-m-Y_H-i-s") . '_export.csv';
-
-            foreach ($productEntries as $entry) {
-                $data[] = [
-                    'id' => $entry['id'],
-                    'name' => $entry['name'],
-                    'quantity' => $entry['quantity']
-                ];
-            }
-            // Set headers to prompt download
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="' . $filename . '"');
-
-            // Open output stream
-            $output = fopen('php://output', 'w');
-
-            // Add CSV header
-            fputcsv($output, ['id', 'name', 'quantity']);
-
-            // Add data to CSV
-            foreach ($data as $row) {
-                fputcsv($output, $row);
-            }
-
-            // Close output stream
-            fclose($output);
-            exit;
-            return back();
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['id', 'name', 'quantity']);
+        foreach ($data as $row) {
+            fputcsv($output, $row);
         }
+        fclose($output);
+        return back();
+    }
+
+    public function exportJournal()
+    {
+        $journalEntries = journal::with('product:id,name')
+            ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+            ->get();
+        $filename = "journal_" . date("d-m-Y_H-i-s") . '_export.csv';
+
+        foreach ($journalEntries as $entry) {
+            $data[] = [
+                'id' => $entry['id'],
+                'name' => $entry['name'],
+                'date' => $entry['date'],
+                'method' => $entry['method'],
+                'amount' => $entry['amount'],
+                'product' => $entry['product']['name'],
+                'total' => $entry['total'],
+                'notes' => $entry['notes'],
+            ];
+        }
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes']);
+        foreach ($data as $row) {
+            fputcsv($output, $row);
+        }
+        fclose($output);
+        return back();
     }
 }
