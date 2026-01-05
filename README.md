@@ -17,3 +17,4 @@ Some other features included are:
 - [ ] Improve mobile view
 - [ ] Allow users to mark their debts as paid
 - [ ] Fix product export
+- [ ] Allow multiple prices for one product (e.g. beer can sell for two different prices)
