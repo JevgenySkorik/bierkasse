@@ -57,6 +57,7 @@
                         <tr class="bg-yellow-600 text-gray-100">
                             <th class="py-3 px-4 text-center">{{ __('messages.pr_name') }}</th>
                             <th class="py-3 px-4 w-32 text-center">{{ __('messages.price') }}</th>
+                            <th class="py-3 px-4 w-32 text-center">{{ __('messages.alt_price') }}</th>
                             <th class="py-3 px-4 w-32 text-center">{{ __('messages.amount') }}</th>
                             <th class="py-3 px-4 text-center">
                                 <input type="button"
@@ -83,6 +84,11 @@
                                 <td class="py-3 px-4">
                                     <input name="entries[{{ $entry->id }}][price]" type="text" value="{{ $entry->price }}"
                                         required class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
+                                </td>
+                                <!-- Alternative Price -->
+                                <td class="py-3 px-4">
+                                    <input name="entries[{{ $entry->id }}][alternative_price]" type="text" value="{{ $entry->alternative_price }}"
+                                        class="bg-zinc-600 text-gray-200 w-full p-2 rounded">
                                 </td>
                                 <td class="py-3 px-4">
                                     <input name="entries[{{ $entry->id }}][quantity]" type="text" value="{{ $entry->quantity }}"

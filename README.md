@@ -10,6 +10,7 @@ Some other features included are:
 * Admin dashboard for journal and product entry editing
 * Ability to export all entries as a .csv files
 * Debts page for a fast and convenient way to check the debtors and mark debts as paid
+* Alternative prices for products (e.g. beer can sell for two different prices)
 
 ## Todo
 
@@ -17,4 +18,4 @@ Some other features included are:
 - [ ] Improve mobile view
 - [ ] Allow users to mark their debts as paid
 - [ ] Fix product export
-- [ ] Allow multiple prices for one product (e.g. beer can sell for two different prices)
+- [x] Allow multiple prices for one product (e.g. beer can sell for two different prices)

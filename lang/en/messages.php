@@ -37,6 +37,7 @@ return [
     'edit_journal' => 'Edit journal',
     'add_product' => 'Add new product',
     'price' => 'Price',
+    'alt_price' => 'Alt. Price',
     'mark_paid' => 'Mark as paid',
     'danger' => 'Danger',
     'danger_1' => 'When editing products keep in mind that:',

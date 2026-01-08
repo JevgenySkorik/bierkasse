@@ -89,7 +89,9 @@ class JournalController extends Controller
         $currentBalance = $nameEntry->balance;
 
         foreach ($products as $index => $product) {
-            $productName = explode('|', $product)[0];
+            $productParts = explode('|', $product);
+            $productName = $productParts[0];
+            $productPrice = floatval($productParts[1]);
 
             $newJournalEntry = new journal;
             $newJournalEntry->name = $clientName;
@@ -109,7 +111,7 @@ class JournalController extends Controller
 
             $newJournalEntry->date = $request->date;
             $newJournalEntry->method = $request->method;
-            $subTotal = product::where('name', $productName)->first()['price'] * $amounts[$index];
+            $subTotal = $productPrice * $amounts[$index];
 
             // Deduct payment from client's balance, if it is sufficient
             if ($request->method == 'Deposit' && $currentBalance >= $subTotal) {
@@ -164,6 +166,7 @@ class JournalController extends Controller
 
             $productEntry->name = $entry['name'];
             $productEntry->price = $entry['price'];
+            $productEntry->alternative_price = $entry['alternative_price'] ?? 0;
             $productEntry->quantity = $entry['quantity'];
             $productEntry->save();
         }

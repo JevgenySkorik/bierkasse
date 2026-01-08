@@ -79,9 +79,14 @@
                                         <option style="display:none;" value="{{ $entry->product->name }}">
                                             {{ $entry->product->name }}</option>
                                         @foreach ($products as $product)
-                                            <option value="{{ $product->name }}" {{ $entry->product == $product->name ? "selected" : "" }}>
+                                            <option value="{{ $product->name }}" {{ $entry->product->name == $product->name ? "selected" : "" }}>
                                                 {{ $product->name }} (€{{ $product->price }})
                                             </option>
+                                            @if ($product->alternative_price > 0)
+                                                <option value="{{ $product->name }}">
+                                                    {{ $product->name }} (€{{ $product->alternative_price }})
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </td>

@@ -82,6 +82,12 @@
                                                         {{ $product->name }} (€{{ number_format($product->price, 2) }})
                                                         [{{ $product->quantity }}]
                                                     </option>
+                                                    @if ($product->alternative_price > 0)
+                                                        <option value="{{ $product->name }}|{{ $product->alternative_price }}">
+                                                            {{ $product->name }} (€{{ number_format($product->alternative_price, 2) }})
+                                                            [{{ $product->quantity }}]
+                                                        </option>
+                                                    @endif
                                                 @endforeach
                                             </select>
                                             <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()"
@@ -99,6 +105,12 @@
                                                     {{ $product->name }} (€{{ number_format($product->price, 2) }})
                                                     [{{ $product->quantity }}]
                                                 </option>
+                                                @if ($product->alternative_price > 0)
+                                                    <option value="{{ $product->name }}|{{ $product->alternative_price }}">
+                                                        {{ $product->name }} (€{{ number_format($product->alternative_price, 2) }})
+                                                        [{{ $product->quantity }}]
+                                                    </option>
+                                                @endif
                                             @endforeach
                                         </select>
                                         <input name="amounts[]" type="number" min="1" value="1" onchange="updateTotal()"
@@ -163,6 +175,9 @@
             let productOptions = '<option style="display:none;"></option>';
             products.forEach(product => {
                 productOptions += `<option value="${product.name}|${product.price}">${product.name} (€${product.price}) [${product.quantity}]</option>`;
+                if (product.alternative_price > 0) {
+                    productOptions += `<option value="${product.name}|${product.alternative_price}">${product.name} (€${product.alternative_price}) [${product.quantity}]</option>`;
+                }
             });
 
             newRow.innerHTML = `
