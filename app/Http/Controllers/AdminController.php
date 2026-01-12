@@ -114,27 +114,22 @@ class AdminController extends Controller
     }
     public function exportProducts()
     {
-        $data = [];
         $productEntries = product::select(['id', 'name', 'quantity'])->get();
         $filename = "products_" . date("d-m-Y_H-i-s") . '_export.csv';
 
-        foreach ($productEntries as $entry) {
-            $data[] = [
-                'id' => $entry['id'],
-                'name' => $entry['name'],
-                'quantity' => $entry['quantity']
-            ];
-        }
+        $callback = function () use ($productEntries) {
+            $output = fopen('php://output', 'w');
+            fputcsv($output, ['id', 'name', 'quantity']);
+            foreach ($productEntries as $entry) {
+                fputcsv($output, [$entry->id, $entry->name, $entry->quantity]);
+            }
+            fclose($output);
+        };
 
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        $output = fopen('php://output', 'w');
-        fputcsv($output, ['id', 'name', 'quantity']);
-        foreach ($data as $row) {
-            fputcsv($output, $row);
-        }
-        fclose($output);
-        return back();
+        return response()->stream($callback, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
     }
 
     public function exportJournal()
@@ -144,27 +139,27 @@ class AdminController extends Controller
             ->get();
         $filename = "journal_" . date("d-m-Y_H-i-s") . '_export.csv';
 
-        foreach ($journalEntries as $entry) {
-            $data[] = [
-                'id' => $entry['id'],
-                'name' => $entry['name'],
-                'date' => $entry['date'],
-                'method' => $entry['method'],
-                'amount' => $entry['amount'],
-                'product' => $entry['product']['name'],
-                'total' => $entry['total'],
-                'notes' => $entry['notes'],
-            ];
-        }
+        $callback = function () use ($journalEntries) {
+            $output = fopen('php://output', 'w');
+            fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes']);
+            foreach ($journalEntries as $entry) {
+                fputcsv($output, [
+                    $entry->id,
+                    $entry->name,
+                    $entry->date,
+                    $entry->method,
+                    $entry->amount,
+                    $entry->product->name,
+                    $entry->total,
+                    $entry->notes,
+                ]);
+            }
+            fclose($output);
+        };
 
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        $output = fopen('php://output', 'w');
-        fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes']);
-        foreach ($data as $row) {
-            fputcsv($output, $row);
-        }
-        fclose($output);
-        return back();
+        return response()->stream($callback, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
     }
 }
