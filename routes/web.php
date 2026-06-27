@@ -27,7 +27,7 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
     Route::post('/updateProductEntries', [JournalController::class, 'updateProductEntries'])->name('updateProductEntries');
     Route::post('/updateBalances', [JournalController::class, 'updateBalances'])->middleware('auth')->name('updateBalances');
     Route::post('/addName', [JournalController::class, 'addName'])->middleware('auth')->name('addName');
-    Route::post('/updateDebts', [JournalController::class, 'updateDebts'])->middleware('auth')->name('updateDebts');
+    Route::post('/updateDebts', [JournalController::class, 'updateDebts'])->name('updateDebts');
     Route::post('/login', [AdminController::class, 'authenticate'])->name('authenticate');
     Route::post('/changeLocale', [LanguageController::class, 'changeLocale'])->name('changeLocale');
 });
