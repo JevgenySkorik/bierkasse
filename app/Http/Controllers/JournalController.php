@@ -208,6 +208,10 @@ class JournalController extends Controller
                 }
             }
         }
+        if($request['fromMyDebt']) {
+            session()->flash('success', __('messages.debt_upd'));
+            return redirect('mobile');
+        }
         session()->flash('success', __('messages.debt_upd'));
         return redirect('debts');
     }
