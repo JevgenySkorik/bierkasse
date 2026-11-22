@@ -48,7 +48,7 @@ class AdminController extends Controller
     {
         return view('journal', [
             'journalEntries' => journal::with('product:id,name')
-                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes', 'paid_at'])
                 ->orderBy('id', 'DESC')
                 ->paginate(15),
             'products' => product::all(),
@@ -94,23 +94,27 @@ class AdminController extends Controller
         $debts = [];
         if (Cookie::has('clientName')) {
             $client = name::where('name', Cookie::get('clientName'))->first();
-        }
-        if ($client) {
-            $journalEntries = journal::with('product:id,name')
-                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
-                ->where('method', 'Debt')
-                ->where('name', $client->name)
-                ->get();
-            foreach ($journalEntries as $journalEntry) {
-                $debt += $journalEntry->total;
-                $debts[] = $journalEntry->toArray();
+            if ($client) {
+                $journalEntries = journal::with('product:id,name')
+                    ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+                    ->where('method', 'Debt')
+                    ->where('name', $client->name)
+                    ->paginate(5);
+                foreach ($journalEntries as $journalEntry) {
+                    $debt += $journalEntry->total;
+                    $debts[] = $journalEntry->toArray();
+                }
             }
+            return view('mydebt', [
+                "clientName" => $client ? $client->name : null,
+                "totalDebt" => $debt ?? null,
+                "debts" => $debts
+            ]);
         }
-        return view('mydebt', [
-            "clientName" => $client ? $client->name : null,
-            "totalDebt" => $debt ?? null,
-            "debts" => $debts
-        ]);
+        else {
+            return view('enter-name', []);
+        }
+       
     }
     public function exportProducts()
     {
@@ -135,13 +139,13 @@ class AdminController extends Controller
     public function exportJournal()
     {
         $journalEntries = journal::with('product:id,name')
-            ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+            ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes', 'paid_at'])
             ->get();
         $filename = "journal_" . date("d-m-Y_H-i-s") . '_export.csv';
 
         $callback = function () use ($journalEntries) {
             $output = fopen('php://output', 'w');
-            fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes']);
+            fputcsv($output, ['id', 'name', 'date', 'method', 'amount', 'product', 'total', 'notes', 'paid_at']);
             foreach ($journalEntries as $entry) {
                 fputcsv($output, [
                     $entry->id,
@@ -152,6 +156,7 @@ class AdminController extends Controller
                     $entry->product->name,
                     $entry->total,
                     $entry->notes,
+                    $entry->paid_at
                 ]);
             }
             fclose($output);
@@ -161,5 +166,19 @@ class AdminController extends Controller
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ]);
+    }
+
+    public function mobileLogin(Request $request) {
+        $clientName = explode(' (', $request->name)[0];
+        Cookie::queue('clientName', $clientName, 60 * 9999);
+        
+        // If new name, add to names table(for autocomplete)
+        $nameExists = name::where('name', $clientName)->exists();
+        if (!$nameExists) {
+            $newName = new name;
+            $newName->name = $clientName;
+            $newName->save();
+        }
+        return redirect('/myDebt');
     }
 }

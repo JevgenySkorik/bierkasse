@@ -9,6 +9,7 @@ use App\Models\name;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cookie;
+use Carbon\Carbon;
 
 class JournalController extends Controller
 {
@@ -16,7 +17,7 @@ class JournalController extends Controller
     {
         return view('index', [
             'journalEntries' => journal::with('product:id,name')
-                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes'])
+                ->select(['id', 'name', 'date', 'method', 'amount', 'product_id', 'total', 'notes', 'paid_at'])
                 ->orderBy('id', 'DESC')
                 ->paginate(15),
             'products' => product::all(),
@@ -204,6 +205,8 @@ class JournalController extends Controller
                 $debtEntry = journal::find($index);
                 if (isset($debt['pay'])) {
                     $debtEntry->method = 'Cash';
+                    $debtEntry->save();
+                    $debtEntry->paid_at = Carbon::now();
                     $debtEntry->save();
                 }
             }

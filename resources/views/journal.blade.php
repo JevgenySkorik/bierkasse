@@ -31,6 +31,7 @@
                             <th class="py-3 px-4 text-center">{{ __('messages.name') }}</th>
                             <th class="py-3 px-4 text-center">{{ __('messages.date') }}</th>
                             <th class="py-3 px-4 text-center">{{ __('messages.paymethod') }}</th>
+                            <th class="py-3 px-4 text-center">{{ __('messages.paid_at') }}</th>
                             <th class="py-3 px-4 text-center">{{ __('messages.product') }}</th>
                             <th class="py-3 px-4 text-center">{{ __('messages.amount') }}</th>
                             <th class="py-3 px-4 text-center">{{ __('messages.total') }}</th>
@@ -71,6 +72,10 @@
                                         <option value="Deposit" {{ $entry->method == 'Deposit' ? 'selected' : '' }}>
                                             {{ __('messages.Deposit') }}</option>
                                     </select>
+                                </td>
+                                <!-- Debt payment time -->
+                                <td class="py-3 px-4">
+                                    {{ $entry->paid_at}}
                                 </td>
                                 <!-- Product -->
                                 <td class="py-3 px-4">

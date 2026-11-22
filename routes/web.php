@@ -29,5 +29,6 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
     Route::post('/addName', [JournalController::class, 'addName'])->middleware('auth')->name('addName');
     Route::post('/updateDebts', [JournalController::class, 'updateDebts'])->name('updateDebts');
     Route::post('/login', [AdminController::class, 'authenticate'])->name('authenticate');
+    Route::post('/MobileLogin', [AdminController::class, 'mobileLogin'])->name('mobileLogin');
     Route::post('/changeLocale', [LanguageController::class, 'changeLocale'])->name('changeLocale');
 });
